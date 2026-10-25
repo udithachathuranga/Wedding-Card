@@ -98,7 +98,7 @@ export default function CountdownTimer() {
         </div>
 
         <p className="mt-5 text-xs text-gold-300/80 italic font-cormorant text-sm">
-          Saturday, December 19, 2026 • 7:00 PM • Jetwing Blue Hotel, Negombo
+          Saturday, 12th of December 2026 • Church Mass 4:00 PM at St. John&apos;s Church, Modera
         </p>
       </div>
     </div>

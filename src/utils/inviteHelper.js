@@ -24,15 +24,28 @@ export const COMPANION_OPTIONS = [
 ];
 
 export const WEDDING_DETAILS = {
-  groom: 'Shantha Ruban',
+  coupleTitle: 'Lakshani & Shan',
+  groom: 'Shan (Shantha Ruban)',
   bride: 'Lakshani Warnakulasooriya',
-  dateFormatted: 'Saturday, December 19, 2026',
-  timeFormatted: '7:00 PM Onwards',
-  targetDateISO: '2026-12-19T19:00:00',
-  venue: 'Jetwing Blue Hotel',
-  venueAddress: 'Porutota Road, Negombo, Sri Lanka',
-  googleMapsUrl: 'https://maps.google.com/?q=Jetwing+Blue+Hotel+Negombo',
-  dressCode: 'Formal / Royal Festive Elegance',
+  monogram: 'L & S',
+  groomParents: 'Mr. & Mrs. Idayaraja',
+  brideParents: 'Mr. & Mrs. Warnakulasooriya',
+  dateFormatted: '12th of December 2026',
+  dateDayFormatted: 'Saturday, December 12, 2026',
+  shortDate: '12 • 12 • 26',
+  targetDateISO: '2026-12-12T16:00:00', // 4:00 PM
+  churchTitle: "St. John's Church - Modera",
+  churchTime: '4:00 PM',
+  churchMassText: "church mass begins at 4.00 pm at St. John's church - Modera",
+  churchMapsUrl: "https://maps.google.com/?q=St.+John's+Church+Modera",
+  receptionTitle: 'White Tower Hotel - Ja-Ela',
+  receptionTime: 'Followed by reception',
+  receptionText: 'followed by the reception At white tower hotel - Ja-ela',
+  receptionMapsUrl: 'https://maps.google.com/?q=White+Tower+Hotel+Ja-Ela',
+  rsvpText: 'rsvp (regrets only)',
+  rsvpPhone: '076 0522561',
+  rsvpPhoneTel: 'tel:0760522561',
+  rsvpWhatsappUrl: 'https://wa.me/94760522561',
 };
 
 // Generate clean query string or encoded payload
@@ -65,7 +78,7 @@ export function parseInviteFromUrl() {
   const customSuffix = params.get('s') || params.get('suffix') || '';
   const seats = params.get('p') || params.get('seats') || '2';
   const note = params.get('msg') || params.get('note') || '';
-  const code = params.get('id') || params.get('code') || 'SW-GUEST';
+  const code = params.get('id') || params.get('code') || 'LS-GUEST';
 
   const isCustomGuest = params.has('n') || params.has('name') || params.has('t');
 
@@ -125,32 +138,41 @@ export function generateWhatsAppMessage(guest, inviteUrl) {
 
   return `👑 *WEDDING INVITATION* 👑
 
-Dear *${guestFormatted}*,
+${WEDDING_DETAILS.groomParents} Together with
+${WEDDING_DETAILS.brideParents}
+Request the honour of the presence of
 
-Together with our families,
-*${WEDDING_DETAILS.groom}* & *${WEDDING_DETAILS.bride}*
-request the honor of your presence to celebrate their Holy Matrimony & Wedding Reception.
+*${guestFormatted}*
+
+To celebrate the special day of
+💍 *${WEDDING_DETAILS.coupleTitle}* 💍
+(${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom})
 
 ${companionText}
 
-📅 *Date:* ${WEDDING_DETAILS.dateFormatted}
-⏰ *Time:* ${WEDDING_DETAILS.timeFormatted}
-📍 *Venue:* ${WEDDING_DETAILS.venue}, ${WEDDING_DETAILS.venueAddress}
-✨ *Attire:* ${WEDDING_DETAILS.dressCode}
+📅 *Date:* ${WEDDING_DETAILS.dateFormatted} (${WEDDING_DETAILS.dateDayFormatted})
+⛪ *Church Mass:* ${WEDDING_DETAILS.churchTime} at ${WEDDING_DETAILS.churchTitle}
+🥂 *Reception:* Followed by reception at ${WEDDING_DETAILS.receptionTitle}
+💌 *RSVP (Regrets Only):* ${WEDDING_DETAILS.rsvpPhone}
 
 💌 *Tap the link below to open your personalized invitation card:*
 ${inviteUrl}
 
-_We would be honored by your blessings and presence!_ 🥂💍`;
+_We look forward to celebrating this blessed day together!_ ✨💍`;
 }
 
 // Google Calendar URL Generator
 export function getGoogleCalendarUrl() {
-  const title = encodeURIComponent(`Wedding: ${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride}`);
-  const details = encodeURIComponent(`Celebrating the wedding of ${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride} at Jetwing Blue Hotel, Negombo.`);
-  const location = encodeURIComponent(`${WEDDING_DETAILS.venue}, ${WEDDING_DETAILS.venueAddress}`);
-  // 20261219T133000Z to 20261219T180000Z (7pm to 11:30pm Sri Lanka time +05:30 is 13:30 to 18:00 UTC)
-  const dates = '20261219T133000Z/20261219T180000Z';
+  const title = encodeURIComponent(`Wedding: ${WEDDING_DETAILS.coupleTitle}`);
+  const details = encodeURIComponent(
+    `Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom}).\n` +
+    `• Church Mass: 4:00 PM at ${WEDDING_DETAILS.churchTitle}\n` +
+    `• Reception: Following the mass at ${WEDDING_DETAILS.receptionTitle}\n` +
+    `• RSVP (Regrets only): ${WEDDING_DETAILS.rsvpPhone}`
+  );
+  const location = encodeURIComponent(`${WEDDING_DETAILS.churchTitle} & ${WEDDING_DETAILS.receptionTitle}`);
+  // Dec 12, 2026: 4:00 PM (16:00 SLT = 10:30 UTC) to 11:30 PM (23:30 SLT = 18:00 UTC)
+  const dates = '20261212T103000Z/20261212T180000Z';
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
 }
@@ -159,15 +181,15 @@ export function getGoogleCalendarUrl() {
 export function downloadIcsFile() {
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Shantha & Waruni Wedding//EN
+PRODID:-//Lakshani & Shan Wedding//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-SUMMARY:Wedding of ${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride}
-DESCRIPTION:Celebrating the Holy Matrimony and Wedding Reception of Shantha Ruban and Lakshani Warnakulasooriya at Jetwing Blue Hotel.
-LOCATION:${WEDDING_DETAILS.venue}, ${WEDDING_DETAILS.venueAddress}
-DTSTART:20261219T133000Z
-DTEND:20261219T180000Z
+SUMMARY:Wedding of ${WEDDING_DETAILS.coupleTitle}
+DESCRIPTION:Celebrating the Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom}). Church mass at 4.00 pm at St. John's church - Modera, followed by reception at White Tower Hotel - Ja-Ela. RSVP (regrets only): 076 0522561.
+LOCATION:${WEDDING_DETAILS.churchTitle} / ${WEDDING_DETAILS.receptionTitle}
+DTSTART:20261212T103000Z
+DTEND:20261212T180000Z
 STATUS:CONFIRMED
 SEQUENCE:0
 END:VEVENT
@@ -177,14 +199,14 @@ END:VCALENDAR`;
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', 'Shantha-Waruni-Wedding.ics');
+  link.setAttribute('download', 'Lakshani-Shan-Wedding.ics');
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
 
 // LocalStorage Persistence for Admin Guest Directory
-const STORAGE_KEY = 'sw_wedding_guest_list_v1';
+const STORAGE_KEY = 'ls_wedding_guest_list_v2';
 
 export function getSavedGuests() {
   try {

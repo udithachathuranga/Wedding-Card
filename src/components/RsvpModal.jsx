@@ -47,10 +47,10 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
     const noteText = blessing ? `\n\n💬 Warm Wishes:\n"${blessing}"` : '';
 
     const text = encodeURIComponent(
-      `💍 *WEDDING RSVP - Shantha & Waruni* 💍\n\n` +
+      `💍 *WEDDING RSVP - Shantha & Lakshani* 💍\n\n` +
       `👤 *Guest Name:* ${guestFullName}\n` +
       `✨ *Response:* ${statusText}${countText}${dietText}${noteText}\n\n` +
-      `📅 Event: Dec 19, 2026 at Jetwing Blue Hotel`
+      `📅 Event: Dec 12, 2026 at Jetwing Blue Hotel`
     );
 
     window.open(`https://wa.me/?text=${text}`, '_blank');
@@ -88,11 +88,10 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                 <button
                   type="button"
                   onClick={() => setAttending('yes')}
-                  className={`p-3.5 rounded-xl border text-center transition-all ${
-                    attending === 'yes'
-                      ? 'bg-gold-500/20 border-gold-400 text-gold-200 shadow-gold-glow'
-                      : 'bg-black/40 border-gold-400/20 text-ivory-200/60 hover:border-gold-400/40'
-                  }`}
+                  className={`p-3.5 rounded-xl border text-center transition-all ${attending === 'yes'
+                    ? 'bg-gold-500/20 border-gold-400 text-gold-200 shadow-gold-glow'
+                    : 'bg-black/40 border-gold-400/20 text-ivory-200/60 hover:border-gold-400/40'
+                    }`}
                 >
                   <Heart className={`w-5 h-5 mx-auto mb-1 ${attending === 'yes' ? 'fill-gold-400 text-gold-400' : ''}`} />
                   <span className="text-xs font-serif font-bold uppercase tracking-wider block">
@@ -104,11 +103,10 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                 <button
                   type="button"
                   onClick={() => setAttending('no')}
-                  className={`p-3.5 rounded-xl border text-center transition-all ${
-                    attending === 'no'
-                      ? 'bg-burgundy-900/40 border-burgundy-400 text-gold-200'
-                      : 'bg-black/40 border-gold-400/20 text-ivory-200/60 hover:border-gold-400/40'
-                  }`}
+                  className={`p-3.5 rounded-xl border text-center transition-all ${attending === 'no'
+                    ? 'bg-burgundy-900/40 border-burgundy-400 text-gold-200'
+                    : 'bg-black/40 border-gold-400/20 text-ivory-200/60 hover:border-gold-400/40'
+                    }`}
                 >
                   <X className="w-5 h-5 mx-auto mb-1 text-burgundy-400" />
                   <span className="text-xs font-serif font-bold uppercase tracking-wider block">
@@ -171,7 +169,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
               {/* Warm Wishes & Blessings */}
               <div>
                 <label className="block text-xs font-serif text-gold-300 uppercase tracking-wider mb-1.5">
-                  Blessing / Message for Shantha &amp; Waruni
+                  Blessing / Message for Shantha &amp; Lakshani
                 </label>
                 <textarea
                   value={blessing}
@@ -203,7 +201,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
             </h3>
             <p className="text-sm text-gold-200/90 font-cormorant text-lg">
               {attending === 'yes'
-                ? `We are delighted that you will join us at Jetwing Blue on December 19 to celebrate our wedding!`
+                ? `We are delighted that you will join us at Jetwing Blue on December 12 to celebrate our wedding!`
                 : `Thank you for letting us know. You will be dearly missed in person, but with us in spirit!`}
             </p>
 

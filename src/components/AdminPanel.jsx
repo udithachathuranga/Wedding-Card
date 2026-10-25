@@ -200,7 +200,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Shantha-Waruni-Wedding-GuestList.csv');
+    link.setAttribute('download', 'Shantha-Lakshani-Wedding-GuestList.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -226,7 +226,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
               Wedding Invitation Link Generator
             </h2>
             <p className="text-xs md:text-sm text-gold-200/70 font-cormorant text-base mt-1">
-              Create unique, personalized digital invitation links for Shantha Ruban &amp; Lakshani Warnakulasooriya&apos;s guests with custom titles and family / partner addressees.
+              Create unique, personalized digital invitation links for Lakshani &amp; Shan&apos;s wedding guests with custom titles and family / partner addressees.
             </p>
           </div>
 
@@ -484,7 +484,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                     Quick WhatsApp Invitation Text
                   </p>
                   <p className="line-clamp-4 italic text-[11px] opacity-80 border-l-2 border-gold-400/40 pl-2">
-                    &ldquo;👑 WEDDING INVITATION: Dear {formatGuestFullName(generatedGuest)}, Shantha Ruban &amp; Lakshani Warnakulasooriya cordially invite you...&rdquo;
+                    &ldquo;👑 WEDDING INVITATION: Dear {formatGuestFullName(generatedGuest)}, Mr. &amp; Mrs. Idayaraja Together with Mr. &amp; Mrs. Warnakulasooriya request the honour of your presence to celebrate the special day of Lakshani &amp; Shan...&rdquo;
                   </p>
                   <button
                     onClick={() => handleCopyWhatsAppMsg(generatedGuest, generatedUrl)}
