@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #fff2cc 0%, #e8c368 25%, #c89932 50%, #f9e29f 75%, #b3821c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .text-gold-foil {
+    background: linear-gradient(to right, #ecd38c, #c5973b, #fef2b8, #b88628, #f5df9b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .border-gold-gradient {
+    border-image: linear-gradient(135deg, #f7e6a7, #c89932, #7a5416, #eec765) 1;
+  }
+
+  .bg-gold-metallic {
+    background: linear-gradient(135deg, #ffe28a 0%, #d8a73f 40%, #a27218 70%, #f5db89 100%);
+  }
+
+  .bg-wax-seal {
+    background: radial-gradient(circle at 35% 35%, #b91c3f, #88132e 60%, #4c0717 100%);
+  }
+
+  .bg-wax-gold {
+    background: radial-gradient(circle at 35% 35%, #ffd978, #c69429 55%, #7e570c 100%);
+  }
+
+  .gold-box-shadow {
+    box-shadow: 0 10px 30px -5px rgba(200, 153, 50, 0.25), 0 0 15px 1px rgba(215, 178, 88, 0.15);
+  }
+}
+
+/* Custom romantic smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #190308;
+}
+::-webkit-scrollbar-thumb {
+  background: #7a5416;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c89932;
+}
+
+/* Envelope perspective styling */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Shimmer effect */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,230,150,0.4) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 3s infinite;
+}
+
+/* Subtle float keyframes for background elements */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
