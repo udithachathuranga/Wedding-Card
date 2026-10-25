@@ -163,7 +163,7 @@ export default function EnvelopeModal({ guest, onOpened }) {
                 {/* Monogram Initials */}
                 <span className="font-serif text-sm font-black text-[#3d2400] select-none whitespace-nowrap leading-none inline-flex items-center justify-center">
                   <span>L</span>
-                  <span className="text-[0.62em] font-bold mx-0.5 self-center leading-none">&amp;</span>
+                  <span className="text-[0.8em] font-bold mx-0.5 self-center leading-none">&amp;</span>
                   <span>S</span>
                 </span>
                 <span className="text-[8px] font-sans font-bold tracking-widest text-[#5e3b03] select-none uppercase whitespace-nowrap mt-1">
