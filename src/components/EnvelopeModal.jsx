@@ -81,7 +81,7 @@ export default function EnvelopeModal({ guest, onOpened }) {
             Royal Wedding Invitation
             <Sparkles className="w-3.5 h-3.5 text-gold-400" />
           </p>
-          <h2 className="font-script text-4xl md:text-5xl text-gold-foil">
+          <h2 className="font-script text-4xl sm:text-5xl md:text-6xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block">
             Lakshani &amp; Shan
           </h2>
         </div>
@@ -153,16 +153,18 @@ export default function EnvelopeModal({ guest, onOpened }) {
           {/* The Golden Wax Seal Stamp in the Center */}
           <div
             className={`absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-700 ${isOpening
-                ? 'scale-150 opacity-0 rotate-45'
-                : 'hover:scale-110 active:scale-95'
+              ? 'scale-150 opacity-0 rotate-45'
+              : 'hover:scale-110 active:scale-95'
               }`}
           >
             <div className="relative w-20 h-20 md:w-22 md:h-22 rounded-full bg-wax-gold shadow-gold-glow flex items-center justify-center border-4 border-[#82590e] p-1">
               {/* Outer decorative rim */}
               <div className="w-full h-full rounded-full border-2 border-dashed border-[#593905] flex items-center justify-center flex-col shadow-inner">
                 {/* Monogram Initials */}
-                <span className="font-serif text-sm font-black tracking-widest text-[#3d2400] select-none whitespace-nowrap leading-none">
-                  L &amp; S
+                <span className="font-serif text-sm font-black text-[#3d2400] select-none whitespace-nowrap leading-none inline-flex items-center justify-center">
+                  <span>L</span>
+                  <span className="text-[0.62em] font-bold mx-0.5 self-center leading-none">&amp;</span>
+                  <span>S</span>
                 </span>
                 <span className="text-[8px] font-sans font-bold tracking-widest text-[#5e3b03] select-none uppercase whitespace-nowrap mt-1">
                   DEC 12

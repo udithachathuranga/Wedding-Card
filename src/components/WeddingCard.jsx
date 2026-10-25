@@ -89,8 +89,10 @@ export default function WeddingCard({
         <div className="relative inline-flex flex-col items-center justify-center mb-6">
           <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-burgundy-900/70 to-black/85 backdrop-blur-sm animate-float-gentle">
             <div className="w-full h-full rounded-full border border-dashed border-gold-400/40 flex flex-col items-center justify-center px-3">
-              <span className="font-serif text-2xl sm:text-3xl font-black text-gold-gradient tracking-wider whitespace-nowrap leading-none select-none">
-                L &amp; S
+              <span className="font-serif text-2xl sm:text-3xl font-black text-gold-gradient whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
+                <span className='text-[1.5em]'>L</span>
+                <span className="text-[0.58em] font-normal mx-1.5 self-center opacity-95 leading-none">&amp;</span>
+                <span className='text-[1.5em]'>S</span>
               </span>
               <span className="text-[10px] sm:text-xs font-sans font-semibold tracking-[0.16em] text-gold-300/90 uppercase whitespace-nowrap mt-2.5 select-none">
                 {WEDDING_DETAILS.shortDate}
@@ -101,7 +103,7 @@ export default function WeddingCard({
         </div>
 
         {/* Parents / Hosts Official Invitation Header (from actual card) */}
-        <div className="space-y-1 mb-6 animate-fade-in-up">
+        <div className="space-y-1 animate-fade-in-up">
           <p className="font-serif text-xs sm:text-sm text-gold-200/90 tracking-[0.2em] uppercase font-medium">
             {WEDDING_DETAILS.groomParents} Together with
           </p>
@@ -113,47 +115,50 @@ export default function WeddingCard({
           </p>
         </div>
 
-        {/* Personalized Guest Badge / Addressee Callout */}
-        <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#2e0611]/90 via-[#1f030a]/85 to-[#160207]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
-          {/* Subtle gold ribbon top accent */}
-          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
-          <span className="text-[10px] md:text-xs font-serif uppercase tracking-[0.25em] text-gold-300/80 block mb-2 font-semibold">
-            ✦ Cordially Invited ✦
-          </span>
-
-          {/* Formatted Guest Name with Title */}
-          <h3 className="font-serif text-2xl sm:text-3xl font-extrabold text-gold-gradient tracking-wide">
-            {guestFullName}
-          </h3>
-
-          {/* Companion / Family Scope Pill */}
-          <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 text-xs sm:text-sm text-gold-200 font-sans shadow-sm">
-            <Heart className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
-            <span className="font-medium">{companionBadge}</span>
-          </div>
-
-          {currentGuest?.seats && (
-            <p className="mt-2 text-xs text-gold-300/70 font-sans">
-              Seats Reserved in Your Honor: <strong className="text-gold-200">{currentGuest.seats}</strong>
-            </p>
-          )}
-
-          {currentGuest?.note && (
-            <div className="mt-3 pt-3 border-t border-gold-400/20 text-xs italic text-gold-200/80 font-cormorant text-base">
-              &ldquo;{currentGuest.note}&rdquo;
-            </div>
-          )}
-        </div>
 
         {/* Couple Names (Lakshani & Shan) */}
         <div className="space-y-2 mb-6">
-          <h1 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-tight filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)]">
+          <h1 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)]">
             {WEDDING_DETAILS.coupleTitle}
           </h1>
-          <p className="font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase">
+          <p className="pb-6 font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase">
             ({WEDDING_DETAILS.bride} &amp; {WEDDING_DETAILS.groom})
           </p>
+
+          {/* Personalized Guest Badge / Addressee Callout */}
+          <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#2e0611]/90 via-[#1f030a]/85 to-[#160207]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
+            {/* Subtle gold ribbon top accent */}
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
+
+            <span className="text-[10px] md:text-xs font-serif uppercase tracking-[0.25em] text-gold-300/80 block mb-2 font-semibold">
+              ✦ Cordially Invited ✦
+            </span>
+
+            {/* Formatted Guest Name with Title */}
+            <h3 className="font-serif text-2xl sm:text-3xl font-extrabold text-gold-gradient tracking-wide">
+              {guestFullName}
+            </h3>
+
+            {/* Companion / Family Scope Pill */}
+            <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 text-xs sm:text-sm text-gold-200 font-sans shadow-sm">
+              <Heart className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
+              <span className="font-medium">{companionBadge}</span>
+            </div>
+
+            {currentGuest?.seats && (
+              <p className="mt-2 text-xs text-gold-300/70 font-sans">
+                Seats Reserved in Your Honor: <strong className="text-gold-200">{currentGuest.seats}</strong>
+              </p>
+            )}
+
+            {currentGuest?.note && (
+              <div className="mt-3 pt-3 border-t border-gold-400/20 text-xs italic text-gold-200/80 font-cormorant text-base">
+                &ldquo;{currentGuest.note}&rdquo;
+              </div>
+            )}
+          </div>
+
           <p className="font-cormorant italic text-lg sm:text-xl md:text-2xl text-gold-200/90 max-w-xl mx-auto leading-relaxed pt-2">
             Invite you to join them on their special day
           </p>
@@ -316,10 +321,12 @@ export default function WeddingCard({
 
       {/* Royal Footer */}
       <footer className="mt-12 pt-10 border-t border-gold-400/20 text-center px-4 max-w-xl mx-auto">
-        <span className="font-serif text-3xl font-black text-gold-gradient tracking-widest block mb-2 whitespace-nowrap">
-          {WEDDING_DETAILS.monogram}
-        </span>
-        <p className="font-script text-3xl sm:text-4xl text-gold-foil">
+        {/* <span className="font-serif text-3xl font-black text-gold-gradient block mb-2 whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
+          <span>L</span>
+          <span className="text-[0.58em] font-normal mx-2 self-center opacity-95 leading-none">&amp;</span>
+          <span>S</span>
+        </span> */}
+        <p className="font-script text-3xl sm:text-4xl text-gold-foil leading-normal pt-2 pb-1 overflow-visible inline-block">
           {WEDDING_DETAILS.coupleTitle}
         </p>
         <p className="text-xs text-gold-300/70 mt-2 font-serif tracking-widest uppercase">
