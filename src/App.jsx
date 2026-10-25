@@ -7,8 +7,9 @@ import { parseInviteFromUrl, generateInviteUrl } from './utils/inviteHelper';
 
 // Helper to determine if current path is admin route (/admin or #admin)
 function checkIsAdminRoute() {
-  const path = window.location.pathname.replace(/\/+$/, '');
-  return path === '/admin' || window.location.hash === '#admin';
+  const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+  const hash = window.location.hash.toLowerCase();
+  return path === '/admin' || hash === '#admin';
 }
 
 export default function App() {
