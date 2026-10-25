@@ -204,12 +204,12 @@ export default function WeddingCard({
           {/* Card 1: Church Mass */}
           <div className="p-6 rounded-2xl bg-gradient-to-b from-[#26050e] via-[#1a0309] to-[#120105] border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider">
+              <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
+                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
                   Holy Matrimony
                 </span>
-                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-gold-400" />
+                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Clock className="w-3.5 h-3.5 text-gold-400 shrink-0" />
                   {WEDDING_DETAILS.churchTime}
                 </span>
               </div>
@@ -246,12 +246,12 @@ export default function WeddingCard({
           {/* Card 2: Reception */}
           <div className="p-6 rounded-2xl bg-gradient-to-b from-[#26050e] via-[#1a0309] to-[#120105] border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider">
+              <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
+                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
                   Wedding Reception
                 </span>
-                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Sparkles className="w-3.5 h-3.5 text-gold-400 shrink-0" />
                   {WEDDING_DETAILS.receptionTime}
                 </span>
               </div>
@@ -299,20 +299,22 @@ export default function WeddingCard({
                 Add Lakshani &amp; Shan&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
               </p>
             </div>
-            <div className="flex items-center gap-3 w-full">
+            <div className="flex items-stretch gap-3 w-full">
               <a
                 href={getGoogleCalendarUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-3 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors text-center font-bold"
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors font-bold flex flex-col items-center justify-center leading-tight min-h-[54px]"
               >
-                Google Calendar
+                <span>Google</span>
+                <span className="mt-0.5">Calendar</span>
               </a>
               <button
                 onClick={downloadIcsFile}
-                className="flex-1 py-3 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors font-bold"
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors font-bold flex flex-col items-center justify-center leading-tight min-h-[54px]"
               >
-                Apple / Outlook (.ics)
+                <span>Apple / Outlook</span>
+                <span className="mt-0.5">(.ics)</span>
               </button>
             </div>
           </div>
