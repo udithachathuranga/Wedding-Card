@@ -187,16 +187,6 @@ export default function EnvelopeModal({ guest, onOpened }) {
             <Sparkles className="w-4 h-4 text-burgundy-900 group-hover:-rotate-45 transition-transform" />
           </button>
 
-          <button
-            onClick={() => {
-              weddingAudio.start();
-              setIsOpened(true);
-              if (onOpened) onOpened();
-            }}
-            className="text-xs text-gold-300/60 hover:text-gold-200 underline underline-offset-4 transition-colors font-sans"
-          >
-            Skip animation &amp; view card directly →
-          </button>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@ import {
   Link as LinkIcon,
   Copy,
   Check,
-  Send,
   QrCode,
   Users,
   Eye,
@@ -106,11 +105,6 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
     navigator.clipboard.writeText(msg);
     setCopiedMsg(true);
     setTimeout(() => setCopiedMsg(false), 2000);
-  };
-
-  const handleShareWhatsApp = (guest = generatedGuest, url = generatedUrl) => {
-    const msg = generateWhatsAppMessage(guest, url);
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   const handleDelete = (id) => {
@@ -445,21 +439,13 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                 </div>
               </div>
 
-              {/* Action Buttons: WhatsApp & Preview */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <button
-                  onClick={() => handleShareWhatsApp(generatedGuest, generatedUrl)}
-                  className="py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-sans font-semibold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Send via WhatsApp</span>
-                </button>
-
+              {/* Action Button: Preview */}
+              <div className="pt-1">
                 <button
                   onClick={() => {
                     if (onPreviewGuest) onPreviewGuest(generatedGuest);
                   }}
-                  className="py-3 px-4 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400 text-gold-200 font-serif font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400 text-gold-200 font-serif font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-2 shadow"
                 >
                   <Eye className="w-4 h-4 text-gold-300" />
                   <span>Preview as Guest</span>
@@ -602,13 +588,6 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                             title="Copy Guest URL"
                           >
                             <Copy className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleShareWhatsApp(g, url)}
-                            className="p-1.5 rounded-lg hover:bg-[#25D366]/20 text-[#25D366]"
-                            title="Send via WhatsApp"
-                          >
-                            <Send className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(g.id)}

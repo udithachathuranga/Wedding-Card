@@ -11,8 +11,6 @@ import {
   Sparkles,
   MailOpen,
   ExternalLink,
-  Phone,
-  MessageCircle,
   Church,
 } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
@@ -283,42 +281,6 @@ export default function WeddingCard({
           </div>
         </div>
 
-        {/* RSVP (Regrets Only) Section from the Card */}
-        <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#2a0510] via-[#1b0309] to-[#2a0510] border-2 border-gold-400/50 shadow-gold-glow text-center mb-8">
-          <span className="text-[11px] font-serif uppercase tracking-[0.25em] text-gold-300 font-bold block mb-1">
-            ✦ Response Requested ✦
-          </span>
-          <h3 className="font-serif text-xl sm:text-2xl font-bold text-gold-gradient uppercase tracking-wider">
-            {WEDDING_DETAILS.rsvpText}
-          </h3>
-          <p className="text-2xl sm:text-3xl font-serif font-extrabold text-gold-100 my-2 tracking-widest font-mono">
-            {WEDDING_DETAILS.rsvpPhone}
-          </p>
-          <p className="text-xs text-gold-300/80 font-cormorant text-base max-w-md mx-auto mb-5 italic">
-            If you are unable to attend, kindly inform us at your earliest convenience.
-          </p>
-
-          {/* Quick Call & WhatsApp Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-            <a
-              href={WEDDING_DETAILS.rsvpPhoneTel}
-              className="w-full sm:w-auto flex-1 py-3 px-5 rounded-full bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400 text-gold-200 font-serif font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow hover:scale-105 active:scale-95"
-            >
-              <Phone className="w-4 h-4 text-gold-400" />
-              <span>Call: {WEDDING_DETAILS.rsvpPhone}</span>
-            </a>
-
-            <a
-              href={WEDDING_DETAILS.rsvpWhatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto flex-1 py-3 px-5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-sans font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow hover:scale-105 active:scale-95"
-            >
-              <MessageCircle className="w-4 h-4 fill-white" />
-              <span>WhatsApp Message</span>
-            </a>
-          </div>
-        </div>
 
         {/* Save The Date / Calendar Action Bar */}
         <div className="max-w-lg mx-auto">

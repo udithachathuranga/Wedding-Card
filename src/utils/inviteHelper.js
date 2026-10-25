@@ -25,7 +25,7 @@ export const COMPANION_OPTIONS = [
 
 export const WEDDING_DETAILS = {
   coupleTitle: 'Lakshani & Shan',
-  groom: 'Shan (Shantha Ruban)',
+  groom: 'Shantha Ruban',
   bride: 'Lakshani Warnakulasooriya',
   monogram: 'L & S',
   groomParents: 'Mr. & Mrs. Idayaraja',
