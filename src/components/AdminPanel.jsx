@@ -226,7 +226,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
               Wedding Invitation Link Generator
             </h2>
             <p className="text-xs md:text-sm text-gold-200/70 font-cormorant text-base mt-1">
-              Create unique, personalized digital invitation links for Shantha Ruban &amp; Waruni Dissanayaka&apos;s guests with custom titles and family / partner addressees.
+              Create unique, personalized digital invitation links for Shantha Ruban &amp; Lakshani Warnakulasooriya&apos;s guests with custom titles and family / partner addressees.
             </p>
           </div>
 
@@ -317,11 +317,10 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                 {COMPANION_OPTIONS.map((opt) => (
                   <label
                     key={opt.id}
-                    className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-colors ${
-                      companion === opt.id
-                        ? 'bg-gold-500/20 border-gold-400 text-gold-200'
-                        : 'bg-black/30 border-gold-400/20 text-ivory-200/70 hover:border-gold-400/40'
-                    }`}
+                    className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-colors ${companion === opt.id
+                      ? 'bg-gold-500/20 border-gold-400 text-gold-200'
+                      : 'bg-black/30 border-gold-400/20 text-ivory-200/70 hover:border-gold-400/40'
+                      }`}
                   >
                     <div className="flex items-center gap-2">
                       <input
@@ -485,7 +484,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                     Quick WhatsApp Invitation Text
                   </p>
                   <p className="line-clamp-4 italic text-[11px] opacity-80 border-l-2 border-gold-400/40 pl-2">
-                    &ldquo;👑 WEDDING INVITATION: Dear {formatGuestFullName(generatedGuest)}, Shantha Ruban &amp; Waruni Dissanayaka cordially invite you...&rdquo;
+                    &ldquo;👑 WEDDING INVITATION: Dear {formatGuestFullName(generatedGuest)}, Shantha Ruban &amp; Lakshani Warnakulasooriya cordially invite you...&rdquo;
                   </p>
                   <button
                     onClick={() => handleCopyWhatsAppMsg(generatedGuest, generatedUrl)}
@@ -578,8 +577,8 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                           {g.companion === 'family'
                             ? 'Whole Family'
                             : g.companion === 'partner'
-                            ? 'With Partner'
-                            : 'Single'}
+                              ? 'With Partner'
+                              : 'Single'}
                         </span>
                       </td>
                       <td className="py-3 px-3 text-center font-mono">{g.seats || 2}</td>

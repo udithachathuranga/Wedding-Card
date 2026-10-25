@@ -117,7 +117,7 @@ export default function WeddingCard({
             <div className="w-12 sm:w-20 h-px bg-gradient-to-l from-transparent to-gold-400/60" />
           </div>
           <h2 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-tight filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)]">
-            Waruni Dissanayaka
+            Lakshani Warnakulasooriya
           </h2>
         </div>
 
@@ -162,7 +162,7 @@ export default function WeddingCard({
         <div className="mt-8 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-2xl mx-auto">
           <img
             src="/images/wedding_hero.jpg"
-            alt="Shantha Ruban and Waruni Dissanayaka wedding celebration"
+            alt="Shantha Ruban and Lakshani Warnakulasooriya wedding celebration"
             className="w-full h-[280px] sm:h-[380px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
@@ -344,7 +344,7 @@ export default function WeddingCard({
           S &amp; W
         </span>
         <p className="font-script text-3xl sm:text-4xl text-gold-foil">
-          Shantha Ruban &amp; Waruni Dissanayaka
+          Shantha Ruban &amp; Lakshani Warnakulasooriya
         </p>
         <p className="text-xs text-gold-300/70 mt-2 font-serif tracking-widest uppercase">
           December 19, 2026 • Jetwing Blue Hotel, Negombo

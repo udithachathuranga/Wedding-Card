@@ -25,7 +25,7 @@ export const COMPANION_OPTIONS = [
 
 export const WEDDING_DETAILS = {
   groom: 'Shantha Ruban',
-  bride: 'Waruni Dissanayaka',
+  bride: 'Lakshani Warnakulasooriya',
   dateFormatted: 'Saturday, December 19, 2026',
   timeFormatted: '7:00 PM Onwards',
   targetDateISO: '2026-12-19T19:00:00',
@@ -84,7 +84,7 @@ export function parseInviteFromUrl() {
 // Compute the full formatted greeting string (e.g., "Rev. Fr. Jude Silva", "Mr. & Mrs. Perera & Family")
 export function formatGuestFullName(guest) {
   if (!guest) return 'Cherished Guest';
-  
+
   const titlePart = guest.title ? `${guest.title} ` : '';
   let companionPart = '';
 
@@ -117,11 +117,11 @@ export function getCompanionBadgeText(companion, customSuffix) {
 // Generate formatted WhatsApp message for quick sharing
 export function generateWhatsAppMessage(guest, inviteUrl) {
   const guestFormatted = formatGuestFullName(guest);
-  const companionText = guest?.companion === 'family' 
+  const companionText = guest?.companion === 'family'
     ? 'We warmly invite you and your entire family to join us.'
     : guest?.companion === 'partner'
-    ? 'We warmly invite you and your partner to join us.'
-    : 'We warmly invite you to join us.';
+      ? 'We warmly invite you and your partner to join us.'
+      : 'We warmly invite you to join us.';
 
   return `👑 *WEDDING INVITATION* 👑
 
@@ -164,7 +164,7 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 SUMMARY:Wedding of ${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride}
-DESCRIPTION:Celebrating the Holy Matrimony and Wedding Reception of Shantha Ruban and Waruni Dissanayaka at Jetwing Blue Hotel.
+DESCRIPTION:Celebrating the Holy Matrimony and Wedding Reception of Shantha Ruban and Lakshani Warnakulasooriya at Jetwing Blue Hotel.
 LOCATION:${WEDDING_DETAILS.venue}, ${WEDDING_DETAILS.venueAddress}
 DTSTART:20261219T133000Z
 DTEND:20261219T180000Z
