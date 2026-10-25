@@ -100,10 +100,10 @@ export default function EnvelopeModal({ guest, onOpened }) {
         >
           {/* Subtle envelope texture and gold corner brackets */}
           <div className="absolute inset-2 border border-gold-400/25 rounded-xl pointer-events-none" />
-          <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-gold-400/60" />
+          {/* <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-gold-400/60" />
           <div className="absolute top-4 right-4 w-5 h-5 border-t-2 border-r-2 border-gold-400/60" />
           <div className="absolute bottom-4 left-4 w-5 h-5 border-b-2 border-l-2 border-gold-400/60" />
-          <div className="absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 border-gold-400/60" />
+          <div className="absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 border-gold-400/60" /> */}
 
           {/* Envelope Flap Lines (Simulated Triangular Flap) */}
           <svg
@@ -133,22 +133,22 @@ export default function EnvelopeModal({ guest, onOpened }) {
           </svg>
 
           {/* Guest Addressee Card Plate (Mounted on front of envelope) */}
-          <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[86%] p-4 rounded-xl bg-gradient-to-b from-[#180308]/90 via-[#270610]/85 to-[#160207]/90 border border-gold-400/40 shadow-inner text-center z-10 backdrop-blur-sm">
+          {/* <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[86%] p-4 rounded-xl bg-gradient-to-b from-[#180308]/90 via-[#270610]/85 to-[#160207]/90 border border-gold-400/40 shadow-inner text-center z-10 backdrop-blur-sm">
             <span className="text-[10px] tracking-[0.25em] uppercase font-sans text-gold-300/80 font-semibold block mb-1">
               — Exclusive Invitation For —
-            </span>
+            </span> */}
 
-            {/* Recipient Full Name */}
-            <h3 className="font-serif text-lg md:text-xl font-bold text-gold-gradient tracking-wide leading-tight py-0.5">
+          {/* Recipient Full Name */}
+          {/* <h3 className="font-serif text-lg md:text-xl font-bold text-gold-gradient tracking-wide leading-tight py-0.5">
               {guestFullName}
-            </h3>
+            </h3> */}
 
-            {/* Companion / Family Scope Indicator */}
-            <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-[11px] text-gold-200 font-sans">
+          {/* Companion / Family Scope Indicator */}
+          {/* <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-[11px] text-gold-200 font-sans">
               <Heart className="w-3 h-3 fill-gold-400 text-gold-400" />
               <span>{companionBadge}</span>
             </div>
-          </div>
+          </div> */}
 
           {/* The Golden Wax Seal Stamp in the Center */}
           <div
@@ -178,7 +178,7 @@ export default function EnvelopeModal({ guest, onOpened }) {
         </div>
 
         {/* Action Button & Instructions */}
-        <div className="mt-8 flex flex-col items-center gap-3">
+        {/* <div className="mt-8 flex flex-col items-center gap-3">
           <button
             onClick={handleOpenEnvelope}
             disabled={isOpening}
@@ -189,7 +189,7 @@ export default function EnvelopeModal({ guest, onOpened }) {
             <Sparkles className="w-4 h-4 text-burgundy-900 group-hover:-rotate-45 transition-transform" />
           </button>
 
-        </div>
+        </div> */}
       </div>
     </div>
   );
