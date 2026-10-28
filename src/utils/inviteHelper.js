@@ -130,35 +130,25 @@ export function getCompanionBadgeText(companion, customSuffix) {
 // Generate formatted WhatsApp message for quick sharing
 export function generateWhatsAppMessage(guest, inviteUrl) {
   const guestFormatted = formatGuestFullName(guest);
-  const companionText = guest?.companion === 'family'
-    ? 'We warmly invite you and your entire family to join us.'
-    : guest?.companion === 'partner'
-      ? 'We warmly invite you and your partner to join us.'
-      : 'We warmly invite you to join us.';
 
-  return `👑 *WEDDING INVITATION* 👑
+  return `✨ *WEDDING INVITATION* ✨
 
-${WEDDING_DETAILS.groomParents} Together with
-${WEDDING_DETAILS.brideParents}
-Request the honour of the presence of
+Dear *${guestFormatted}*,
 
-*${guestFormatted}*
+Together with our families, we cordially invite you to celebrate the holy matrimony and wedding of
 
-To celebrate the special day of
 💍 *${WEDDING_DETAILS.coupleTitle}* 💍
-(${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom})
+_(${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom})_
 
-${companionText}
+🗓️ *Save the Date:* ${WEDDING_DETAILS.dateFormatted}
 
-📅 *Date:* ${WEDDING_DETAILS.dateFormatted} (${WEDDING_DETAILS.dateDayFormatted})
-⛪ *Church Mass:* ${WEDDING_DETAILS.churchTime} at ${WEDDING_DETAILS.churchTitle}
-🥂 *Reception:* Followed by reception at ${WEDDING_DETAILS.receptionTitle}
-💌 *RSVP (Regrets Only):* ${WEDDING_DETAILS.rsvpPhone}
+Your presence, prayers, and blessings will make our special day truly complete and unforgettable! 🥂✨
 
-💌 *Tap the link below to open your personalized invitation card:*
+💌 *For complete event schedule, church & reception venues, interactive map directions, and your personalized card, please tap the link below:*
+👇👇👇
 ${inviteUrl}
 
-_We look forward to celebrating this blessed day together!_ ✨💍`;
+_We can't wait to celebrate this blessed milestone together with you!_ 🕊️🤍`;
 }
 
 // Google Calendar URL Generator

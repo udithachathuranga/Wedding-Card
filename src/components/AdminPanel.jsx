@@ -469,16 +469,26 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
                   <p className="font-serif font-semibold text-gold-300 uppercase tracking-wider text-[11px]">
                     Quick WhatsApp Invitation Text
                   </p>
-                  <p className="line-clamp-4 italic text-[11px] opacity-80 border-l-2 border-gold-400/40 pl-2">
-                    &ldquo;👑 WEDDING INVITATION: Dear {formatGuestFullName(generatedGuest)}, Mr. &amp; Mrs. Idayaraja Together with Mr. &amp; Mrs. Warnakulasooriya request the honour of your presence to celebrate the special day of Lakshani &amp; Shan...&rdquo;
+                  <p className="line-clamp-4 italic text-[11px] opacity-80 border-l-2 border-gold-400/40 pl-2 whitespace-pre-line">
+                    {generateWhatsAppMessage(generatedGuest, generatedUrl)}
                   </p>
-                  <button
-                    onClick={() => handleCopyWhatsAppMsg(generatedGuest, generatedUrl)}
-                    className="inline-flex items-center gap-1.5 text-xs text-gold-300 hover:text-gold-100 underline underline-offset-4"
-                  >
-                    {copiedMsg ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedMsg ? 'Message Copied to Clipboard!' : 'Copy Formatted WhatsApp Message'}</span>
-                  </button>
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <button
+                      onClick={() => handleCopyWhatsAppMsg(generatedGuest, generatedUrl)}
+                      className="inline-flex items-center gap-1.5 text-xs text-gold-300 hover:text-gold-100 underline underline-offset-4"
+                    >
+                      {copiedMsg ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedMsg ? 'Message Copied to Clipboard!' : 'Copy Formatted WhatsApp Message'}</span>
+                    </button>
+                    <a
+                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(generateWhatsAppMessage(generatedGuest, generatedUrl))}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-4"
+                    >
+                      <span>Share on WhatsApp ↗</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
