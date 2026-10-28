@@ -89,11 +89,11 @@ export default function WeddingCard({
         <div className="relative inline-flex flex-col items-center justify-center mb-6">
           <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-burgundy-900/70 to-black/85 backdrop-blur-sm animate-float-gentle">
             <div className="w-full h-full rounded-full border border-dashed border-gold-400/40 flex flex-col items-center justify-center px-3">
-              <span className="font-serif text-2xl sm:text-3xl font-black text-gold-gradient whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
-                <span className='text-[1.5em]'>L</span>
-                <span className="font-normal mx-1.5 self-center opacity-95 leading-none">&amp;</span>
-                <span className='text-[1.5em]'>S</span>
-              </span>
+              <div className="font-serif text-2xl sm:text-3xl whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
+                <span className="text-[1.5em] font-black text-gold-gradient">L</span>
+                <span className="font-normal mx-1.5 self-center text-gold-300 text-xl sm:text-2xl leading-none">&amp;</span>
+                <span className="text-[1.5em] font-black text-gold-gradient">S</span>
+              </div>
               <span className="text-[10px] sm:text-xs font-sans font-semibold tracking-[0.16em] text-gold-300/90 uppercase whitespace-nowrap mt-2.5 select-none">
                 {WEDDING_DETAILS.shortDate}
               </span>
