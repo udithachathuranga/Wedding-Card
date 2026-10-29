@@ -66,11 +66,11 @@ export default function EnvelopeModal({ guest, onOpened }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0d0104]/95 backdrop-blur-md transition-opacity duration-700 ${isOpening ? 'opacity-90' : 'opacity-100'
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a030a]/92 backdrop-blur-md transition-opacity duration-700 ${isOpening ? 'opacity-90' : 'opacity-100'
         }`}
     >
       {/* Background radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,153,50,0.18)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.22)_0%,rgba(175,28,64,0.15)_40%,transparent_70%)] pointer-events-none" />
 
       {/* Main Envelope Presentation Container */}
       <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
@@ -89,7 +89,7 @@ export default function EnvelopeModal({ guest, onOpened }) {
         {/* The 3D Physical-Look Envelope */}
         <div
           onClick={handleOpenEnvelope}
-          className={`group cursor-pointer relative w-full aspect-[16/11] max-w-[440px] rounded-2xl bg-gradient-to-br from-[#4d0b1b] via-[#330611] to-[#1e0209] border-2 border-gold-400/60 shadow-luxury transition-all duration-700 perspective-1000 transform ${isOpening ? 'scale-105 -translate-y-4' : 'hover:scale-[1.02] hover:border-gold-300'
+          className={`group cursor-pointer relative w-full aspect-[16/11] max-w-[440px] rounded-2xl bg-gradient-to-br from-[#631227] via-[#460918] to-[#2c050f] border-2 border-gold-400/60 shadow-luxury transition-all duration-700 perspective-1000 transform ${isOpening ? 'scale-105 -translate-y-4' : 'hover:scale-[1.02] hover:border-gold-300'
             }`}
           role="button"
           tabIndex={0}
@@ -126,8 +126,8 @@ export default function EnvelopeModal({ guest, onOpened }) {
             />
             <defs>
               <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#851a34" />
-                <stop offset="100%" stopColor="#2e050f" />
+                <stop offset="0%" stopColor="#9c1d3c" />
+                <stop offset="100%" stopColor="#3b0614" />
               </linearGradient>
             </defs>
           </svg>

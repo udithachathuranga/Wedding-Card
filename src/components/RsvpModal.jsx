@@ -58,7 +58,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in-up">
-      <div className="relative w-full max-w-lg rounded-2xl bg-gradient-to-b from-[#22040b] via-[#1a0308] to-[#120105] border border-gold-400/50 p-6 md:p-8 shadow-luxury text-ivory-100 max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl bg-gradient-to-b from-[#390918] via-[#2a0510] to-[#1e030b] border border-gold-400/50 p-6 md:p-8 shadow-luxury text-ivory-100 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}

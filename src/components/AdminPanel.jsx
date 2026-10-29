@@ -209,7 +209,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
   return (
     <div className="w-full max-w-5xl mx-auto my-8 px-4 text-ivory-100">
       {/* Header Banner */}
-      <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#2c050f] via-[#1a0309] to-[#2c050f] border border-gold-400/50 shadow-luxury mb-8">
+      <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#3c0918] via-[#280510] to-[#3c0918] border border-gold-400/50 shadow-luxury mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/20 border border-gold-400/40 text-[11px] text-gold-300 font-serif tracking-widest uppercase mb-2">
@@ -246,7 +246,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form: Input Guest Details (5 Cols) */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#1e0309] to-[#120105] p-6 rounded-2xl border border-gold-400/40 shadow-xl space-y-4">
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#2e0510] to-[#1c0209] p-6 rounded-2xl border border-gold-400/40 shadow-xl space-y-4">
           <h3 className="font-serif text-lg font-bold text-gold-200 flex items-center gap-2 pb-2 border-b border-gold-400/20">
             <Users className="w-5 h-5 text-gold-400" />
             <span>Enter Guest Details</span>
@@ -393,7 +393,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         {/* Right Output: Generated Card & QR Code (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {generatedGuest && generatedUrl ? (
-            <div className="bg-gradient-to-b from-[#24040d] via-[#1a0309] to-[#120105] p-6 rounded-2xl border border-gold-400/60 shadow-luxury space-y-5 animate-fade-in-up">
+            <div className="bg-gradient-to-b from-[#380816] via-[#28040f] to-[#1d020a] p-6 rounded-2xl border border-gold-400/60 shadow-luxury space-y-5 animate-fade-in-up">
               <div className="flex items-center justify-between pb-3 border-b border-gold-400/20">
                 <span className="text-xs font-serif uppercase tracking-widest text-gold-300 flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-gold-400" />
@@ -494,7 +494,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
             </div>
           ) : (
             /* Placeholder before first generation */
-            <div className="h-full min-h-[320px] flex flex-col items-center justify-center p-8 rounded-2xl bg-gradient-to-b from-[#1b0309] to-[#100105] border border-dashed border-gold-400/30 text-center">
+            <div className="h-full min-h-[320px] flex flex-col items-center justify-center p-8 rounded-2xl bg-gradient-to-b from-[#2c0510] to-[#1c0209] border border-dashed border-gold-400/30 text-center">
               <QrCode className="w-16 h-16 text-gold-400/40 mb-3" />
               <h4 className="font-serif text-lg text-gold-200 font-medium">
                 No Link Generated Yet
@@ -508,7 +508,7 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
       </div>
 
       {/* Guest Directory / History Table */}
-      <div className="mt-10 bg-gradient-to-b from-[#1c0309] to-[#120105] p-6 rounded-2xl border border-gold-400/40 shadow-xl">
+      <div className="mt-10 bg-gradient-to-b from-[#2e0510] to-[#1c0209] p-6 rounded-2xl border border-gold-400/40 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gold-400/20">
           <div>
             <h3 className="font-serif text-lg font-bold text-gold-200 flex items-center gap-2">

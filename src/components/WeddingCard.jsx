@@ -53,7 +53,7 @@ export default function WeddingCard({
         {/* Audio Toggle */}
         <button
           onClick={toggleMusic}
-          className="pointer-events-auto p-2.5 rounded-full bg-burgundy-950/80 hover:bg-burgundy-900 border border-gold-400/50 shadow-gold-glow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-110 flex items-center gap-2 text-xs font-serif"
+          className="pointer-events-auto p-2.5 rounded-full bg-[#3e0a19]/85 hover:bg-[#520e22] border border-gold-400/50 shadow-gold-glow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-110 flex items-center gap-2 text-xs font-serif"
           title={isPlayingMusic ? 'Mute Background Music' : 'Play Background Music'}
           aria-label="Toggle wedding music"
         >
@@ -74,7 +74,7 @@ export default function WeddingCard({
         {onReplayEnvelope && (
           <button
             onClick={onReplayEnvelope}
-            className="pointer-events-auto p-2.5 rounded-full bg-burgundy-950/80 hover:bg-burgundy-900 border border-gold-400/40 shadow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif"
+            className="pointer-events-auto p-2.5 rounded-full bg-[#3e0a19]/85 hover:bg-[#520e22] border border-gold-400/40 shadow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif"
             title="Re-open Envelope Animation"
           >
             <MailOpen className="w-4 h-4 text-gold-400" />
@@ -87,7 +87,7 @@ export default function WeddingCard({
       <section className="relative pt-20 md:pt-28 pb-12 px-4 max-w-3xl mx-auto text-center">
         {/* Iconic Date Crest (12 • 12 • 26 & Monogram L & S) */}
         <div className="relative inline-flex flex-col items-center justify-center mb-6">
-          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-burgundy-900/70 to-black/85 backdrop-blur-sm animate-float-gentle">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-[#4e0c1c]/85 via-[#340714]/85 to-[#24040d]/90 backdrop-blur-sm animate-float-gentle">
             <div className="w-full h-full rounded-full border border-dashed border-gold-400/40 flex flex-col items-center justify-center px-3">
               <div className="font-serif text-2xl sm:text-3xl whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
                 <span className="text-[1.5em] font-black text-gold-gradient">L</span>
@@ -127,7 +127,7 @@ export default function WeddingCard({
           </p>
 
           {/* Personalized Guest Badge / Addressee Callout */}
-          <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#2e0611]/90 via-[#1f030a]/85 to-[#160207]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
+          <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#460c1d]/90 via-[#330715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
             {/* Subtle gold ribbon top accent */}
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
@@ -154,7 +154,7 @@ export default function WeddingCard({
 
 
             {currentGuest?.note && (
-              <div className="mt-4 p-2 sm:p-2 rounded-xl bg-gradient-to-r from-gold-500/20 via-gold-400/30 to-gold-500/20 border-2 border-gold-400 shadow-gold-glow max-w-sm mx-auto flex items-center justify-center gap-3 text-left">
+              <div className="mt-4 p-2 sm:p-2 rounded-xl bg-gradient-to-r from-gold-500/20 via-gold-400/30 to-gold-500/20 border-2 border-gold-400 shadow-gold-glow max-w-sm mx-auto flex items-center justify-center gap-3 text-center">
                 <div className="flex items-center gap-2.5">
 
                   <div>
@@ -220,7 +220,7 @@ export default function WeddingCard({
         {/* Two Venue Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Card 1: Church Mass */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#26050e] via-[#1a0309] to-[#120105] border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
             <div>
               <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
@@ -263,7 +263,7 @@ export default function WeddingCard({
           </div>
 
           {/* Card 2: Reception */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#26050e] via-[#1a0309] to-[#120105] border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
             <div>
               <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
@@ -309,7 +309,7 @@ export default function WeddingCard({
 
         {/* Save The Date / Calendar Action Bar */}
         <div className="max-w-lg mx-auto">
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#24040d]/90 to-[#120105]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg hover:border-gold-400/60 transition-colors">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#380816]/90 to-[#22040e]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg hover:border-gold-400/60 transition-colors">
             <div>
               <CalendarPlus className="w-8 h-8 text-gold-400 mx-auto mb-2 animate-pulse" />
               <h4 className="font-serif text-base font-bold text-gold-100 uppercase tracking-wider">

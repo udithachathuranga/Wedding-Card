@@ -51,7 +51,7 @@ export default function CountdownTimer() {
 
   return (
     <div className="w-full max-w-xl mx-auto my-8 px-4">
-      <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-b from-[#2a0812]/90 via-[#1f050d]/85 to-[#160208]/90 border border-gold-400/40 shadow-gold-glow backdrop-blur-md text-center">
+      <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-b from-[#3f0a1a]/90 via-[#2f0613]/85 to-[#22040d]/90 border border-gold-400/40 shadow-gold-glow backdrop-blur-md text-center">
         {/* Decorative corner motifs */}
         <div className="absolute top-2 left-2 text-gold-400/50 text-xs">✦</div>
         <div className="absolute top-2 right-2 text-gold-400/50 text-xs">✦</div>
@@ -82,7 +82,7 @@ export default function CountdownTimer() {
           {timeUnits.map((unit, index) => (
             <div
               key={index}
-              className="group relative flex flex-col items-center justify-center p-3 md:p-4 rounded-xl bg-gradient-to-b from-burgundy-950/80 to-[#120207] border border-gold-500/30 shadow-inner hover:border-gold-400/70 transition-all duration-300 hover:scale-105"
+              className="group relative flex flex-col items-center justify-center p-3 md:p-4 rounded-xl bg-gradient-to-b from-[#4b0c1e]/90 to-[#2c0511] border border-gold-500/30 shadow-inner hover:border-gold-400/70 transition-all duration-300 hover:scale-105"
             >
               {/* Digit with metallic gold glow */}
               <span className="font-serif text-2xl md:text-4xl lg:text-5xl font-bold text-gold-gradient tracking-tight">

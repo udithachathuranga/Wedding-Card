@@ -51,7 +51,14 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#110105] text-ivory-100 font-sans selection:bg-gold-500 selection:text-burgundy-950 overflow-x-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#2d0714] via-[#1e040d] to-[#270611] text-ivory-100 font-sans selection:bg-gold-500 selection:text-burgundy-950 overflow-x-hidden">
+      {/* Soft Ambient Radial Light Glows to Lift & Brighten Atmosphere */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[520px] bg-[radial-gradient(ellipse_at_center,rgba(215,178,88,0.15)_0%,rgba(180,30,68,0.18)_40%,transparent_70%)] blur-2xl" />
+        <div className="absolute top-1/3 left-1/4 w-[540px] h-[540px] bg-[radial-gradient(circle_at_center,rgba(195,45,82,0.14)_0%,transparent_65%)] blur-3xl" />
+        <div className="absolute top-2/3 right-1/4 w-[620px] h-[520px] bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.12)_0%,rgba(175,28,64,0.15)_45%,transparent_70%)] blur-3xl" />
+      </div>
+
       {/* Dynamic Floating Golden Dust & Rose Petals */}
       <ParticleBackground />
 
