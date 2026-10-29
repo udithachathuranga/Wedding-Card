@@ -152,17 +152,35 @@ export default function WeddingCard({
               </p>
             )}
 
+
             {currentGuest?.note && (
-              <div className="mt-3 pt-3 border-t border-gold-400/20 text-xs italic text-gold-200/80 font-cormorant text-base">
-                &ldquo;{currentGuest.note}&rdquo;
+              <div className="mt-4 p-2 sm:p-2 rounded-xl bg-gradient-to-r from-gold-500/20 via-gold-400/30 to-gold-500/20 border-2 border-gold-400 shadow-gold-glow max-w-sm mx-auto flex items-center justify-center gap-3 text-left">
+                <div className="flex items-center gap-2.5">
+
+                  <div>
+                    <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-gold-300 font-bold block">
+                      &ldquo;{currentGuest.note}&rdquo;
+                    </span>
+                    {/* <span className="text-[11px] text-gold-200/80 font-sans">
+                    sdfsdf
+                  </span> */}
+                  </div>
+                </div>
+                {/* <div className="px-3.5 py-1.5 w-full rounded-lg bg-gradient-to-b from-[#3a0715] to-[#1c0209] border border-gold-300 shadow-inner text-center">
+                  <span className="font-serif font-black text-base sm:text-lg text-gold-gradient tracking-wider whitespace-nowrap">
+                    &ldquo;{currentGuest.note}&rdquo;
+                  </span>
+                </div> */}
               </div>
             )}
+
+
           </div>
 
           <p className="font-cormorant italic text-lg sm:text-xl md:text-2xl text-gold-200/90 max-w-xl mx-auto leading-relaxed pt-2">
             Invite you to join them on their special day
           </p>
-          <div className="inline-block px-4 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-xs sm:text-sm font-serif font-bold text-gold-200 tracking-widest uppercase mt-2">
+          <div className="inline-block px-8 py-4 rounded-full bg-gold-500/10 border border-gold-400/30 text-lg sm:text-lg font-serif font-bold text-gold-200 tracking-widest uppercase mt-2">
             {WEDDING_DETAILS.dateFormatted}
           </div>
         </div>
@@ -208,8 +226,8 @@ export default function WeddingCard({
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
                   Holy Matrimony
                 </span>
-                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
-                  <Clock className="w-3.5 h-3.5 text-gold-400 shrink-0" />
+                <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Clock className="w-5 h-5 text-gold-400 shrink-0" />
                   {WEDDING_DETAILS.churchTime}
                 </span>
               </div>
@@ -222,8 +240,9 @@ export default function WeddingCard({
                   <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
                     {WEDDING_DETAILS.churchTitle}
                   </h3>
-                  <p className="text-xs text-gold-200/80 font-cormorant text-base mt-1 italic">
-                    church mass begins at 4.00 pm at St. John&apos;s church - Modera
+                  <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
+                    {/* church mass begins at 4.00 pm at St. John&apos;s church - Modera */}
+                    {WEDDING_DETAILS.churchMassText}
                   </p>
                 </div>
               </div>
@@ -250,8 +269,8 @@ export default function WeddingCard({
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
                   Wedding Reception
                 </span>
-                <span className="text-xs font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
-                  <Sparkles className="w-3.5 h-3.5 text-gold-400 shrink-0" />
+                <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Clock className="w-5 h-5 text-gold-400 shrink-0" />
                   {WEDDING_DETAILS.receptionTime}
                 </span>
               </div>
@@ -264,8 +283,9 @@ export default function WeddingCard({
                   <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
                     {WEDDING_DETAILS.receptionTitle}
                   </h3>
-                  <p className="text-xs text-gold-200/80 font-cormorant text-base mt-1 italic">
-                    followed by the reception At white tower hotel - Ja-ela
+                  <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
+                    {/* The reception begins at 6:30 PM at White Tower Hotel - Ja-Ela */}
+                    {WEDDING_DETAILS.receptionText}
                   </p>
                 </div>
               </div>
@@ -295,7 +315,7 @@ export default function WeddingCard({
               <h4 className="font-serif text-base font-bold text-gold-100 uppercase tracking-wider">
                 Save The Date
               </h4>
-              <p className="text-xs text-gold-200/80 font-cormorant text-base mt-1">
+              <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1">
                 Add Lakshani &amp; Shan&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
               </p>
             </div>
@@ -334,7 +354,7 @@ export default function WeddingCard({
         <p className="text-xs text-gold-300/70 mt-2 font-serif tracking-widest uppercase">
           {WEDDING_DETAILS.dateFormatted} • {WEDDING_DETAILS.churchTitle}
         </p>
-        <p className="text-[11px] text-gold-400/50 mt-3 italic font-cormorant text-sm">
+        <p className="text-sm text-gold-400/50 mt-3 italic font-cormorant">
           We look forward to celebrating the joy of our holy union with you!
         </p>
       </footer>
