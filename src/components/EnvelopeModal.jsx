@@ -1,22 +1,11 @@
 import { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Sparkles, Heart } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { weddingAudio } from '../utils/audioPlayer';
-import { formatGuestFullName, getCompanionBadgeText } from '../utils/inviteHelper';
 
-export default function EnvelopeModal({ guest, onOpened }) {
+export default function EnvelopeModal({ onOpened }) {
   const [isOpening, setIsOpening] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-
-  const currentGuest = guest || {
-    title: 'Honored',
-    name: 'Guest',
-    companion: 'none',
-    customSuffix: '',
-  };
-
-  const guestFullName = formatGuestFullName(currentGuest);
-  const companionBadge = getCompanionBadgeText(currentGuest.companion, currentGuest.customSuffix);
 
   const handleOpenEnvelope = () => {
     if (isOpening || isOpened) return;

@@ -61,7 +61,8 @@ export function generateInviteUrl(guestData) {
   if (guestData.customSuffix) params.set('s', guestData.customSuffix);
   if (guestData.seats) params.set('p', guestData.seats);
   if (guestData.note) params.set('msg', guestData.note);
-  if (guestData.code) params.set('id', guestData.code);
+  const guestCode = guestData.id || guestData.code;
+  if (guestCode) params.set('id', guestCode);
 
   return `${baseUrl}?${params.toString()}`;
 }
@@ -83,13 +84,14 @@ export function parseInviteFromUrl() {
   const isCustomGuest = params.has('n') || params.has('name') || params.has('t');
 
   return {
+    id: code,
+    code,
     title,
     name,
     companion,
     customSuffix,
     seats,
     note,
-    code,
     isCustomGuest,
   };
 }
@@ -197,6 +199,7 @@ END:VCALENDAR`;
 
 // LocalStorage Persistence for Admin Guest Directory
 const STORAGE_KEY = 'ls_wedding_guest_list_v2';
+const RSVP_STORAGE_KEY = 'ls_wedding_rsvps_v2';
 
 export function getSavedGuests() {
   try {
@@ -213,7 +216,7 @@ export function saveGuestToStorage(guest) {
   let updated;
   if (existingIdx >= 0) {
     updated = [...current];
-    updated[existingIdx] = guest;
+    updated[existingIdx] = { ...current[existingIdx], ...guest };
   } else {
     updated = [guest, ...current];
   }
@@ -225,5 +228,197 @@ export function deleteGuestFromStorage(id) {
   const current = getSavedGuests();
   const updated = current.filter((g) => g.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+  // Also remove from RSVP store if present
+  try {
+    const rsvps = getSavedRsvps();
+    delete rsvps[id];
+    localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(rsvps));
+  } catch {
+    // Ignore error
+  }
+
   return updated;
+}
+
+// RSVP Storage and Attendance Tracking
+export function getSavedRsvps() {
+  try {
+    const data = localStorage.getItem(RSVP_STORAGE_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveRsvpResponse(rsvpData) {
+  try {
+    const rsvps = getSavedRsvps();
+    const guestId = rsvpData.guestId || rsvpData.id || 'LS-GUEST';
+    const guestName = rsvpData.guestName || 'Cherished Guest';
+    const submittedAt = rsvpData.submittedAt || new Date().toISOString();
+
+    const record = {
+      ...rsvpData,
+      guestId,
+      guestName,
+      submittedAt,
+    };
+
+    // Index by both ID and Name to ensure matching across query strings and storage
+    rsvps[guestId] = record;
+    rsvps[guestName.toLowerCase()] = record;
+    localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(rsvps));
+
+    // Also update guest entry in Guest Directory if it exists
+    const currentGuests = getSavedGuests();
+    const matchIdx = currentGuests.findIndex(
+      (g) => g.id === guestId || formatGuestFullName(g).toLowerCase() === guestName.toLowerCase() || g.name?.toLowerCase() === guestName.toLowerCase()
+    );
+
+    if (matchIdx >= 0) {
+      currentGuests[matchIdx] = {
+        ...currentGuests[matchIdx],
+        attendance: rsvpData.attending === 'yes' ? 'attending' : 'declined',
+        attendingCount: rsvpData.attending === 'yes' ? (rsvpData.guestCount ?? currentGuests[matchIdx].seats ?? 1) : 0,
+        dietary: rsvpData.dietary || currentGuests[matchIdx].dietary || 'Standard',
+        blessing: rsvpData.blessing || currentGuests[matchIdx].blessing || '',
+        rsvpAt: submittedAt,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentGuests));
+    }
+
+    // Dispatch global event for realtime UI reactivity
+    window.dispatchEvent(new CustomEvent('wedding_rsvp_updated', { detail: record }));
+
+    return record;
+  } catch (err) {
+    console.error('Error saving RSVP response:', err);
+    return null;
+  }
+}
+
+export function getGuestRsvp(guest) {
+  if (!guest) return null;
+  const rsvps = getSavedRsvps();
+  const idKey = guest.id || guest.code;
+  const nameKey = formatGuestFullName(guest).toLowerCase();
+  const rawNameKey = guest.name?.toLowerCase();
+
+  return (idKey && rsvps[idKey]) || (nameKey && rsvps[nameKey]) || (rawNameKey && rsvps[rawNameKey]) || null;
+}
+
+export function getGuestsWithRsvp() {
+  const guests = getSavedGuests();
+  const rsvps = getSavedRsvps();
+
+  return guests.map((g) => {
+    const idKey = g.id;
+    const nameKey = formatGuestFullName(g).toLowerCase();
+    const rsvp = (idKey && rsvps[idKey]) || (nameKey && rsvps[nameKey]);
+
+    if (rsvp) {
+      return {
+        ...g,
+        attendance: rsvp.attending === 'yes' ? 'attending' : 'declined',
+        attendingCount: rsvp.attending === 'yes' ? (rsvp.guestCount ?? g.seats ?? 1) : 0,
+        dietary: rsvp.dietary || g.dietary || 'Standard',
+        blessing: rsvp.blessing || g.blessing || '',
+        rsvpAt: rsvp.submittedAt || g.rsvpAt,
+      };
+    }
+
+    return {
+      ...g,
+      attendance: g.attendance || 'pending',
+      attendingCount: g.attendance === 'attending' ? (g.attendingCount ?? g.seats ?? 1) : 0,
+      dietary: g.dietary || 'Standard',
+      blessing: g.blessing || '',
+    };
+  });
+}
+
+export function updateGuestAttendance(guestId, status, attendingCount = 2, dietary = 'Standard', blessing = '') {
+  // status: 'attending' | 'declined' | 'pending'
+  const guests = getSavedGuests();
+  const idx = guests.findIndex((g) => g.id === guestId);
+  const now = new Date().toISOString();
+
+  if (idx >= 0) {
+    guests[idx].attendance = status;
+    guests[idx].attendingCount = status === 'attending' ? (attendingCount || guests[idx].seats || 1) : 0;
+    if (dietary) guests[idx].dietary = dietary;
+    if (blessing) guests[idx].blessing = blessing;
+    guests[idx].rsvpAt = status === 'pending' ? null : now;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(guests));
+  }
+
+  // Also update RSVP cache
+  const rsvps = getSavedRsvps();
+  if (status === 'pending') {
+    delete rsvps[guestId];
+  } else {
+    rsvps[guestId] = {
+      guestId,
+      guestName: idx >= 0 ? formatGuestFullName(guests[idx]) : guestId,
+      attending: status === 'attending' ? 'yes' : 'no',
+      guestCount: status === 'attending' ? attendingCount : 0,
+      dietary,
+      blessing,
+      submittedAt: now,
+    };
+  }
+  localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(rsvps));
+  window.dispatchEvent(new CustomEvent('wedding_rsvp_updated'));
+
+  return getGuestsWithRsvp();
+}
+
+export function getAttendanceStats(guestsList = []) {
+  let totalGuests = guestsList.length;
+  let totalSeats = 0;
+  let attendingGuests = 0;
+  let attendingSeats = 0;
+  let declinedGuests = 0;
+  let pendingGuests = 0;
+
+  guestsList.forEach((g) => {
+    const reserved = parseInt(g.seats, 10) || 1;
+    totalSeats += reserved;
+
+    if (g.attendance === 'attending') {
+      attendingGuests += 1;
+      attendingSeats += parseInt(g.attendingCount, 10) || reserved;
+    } else if (g.attendance === 'declined') {
+      declinedGuests += 1;
+    } else {
+      pendingGuests += 1;
+    }
+  });
+
+  return {
+    totalGuests,
+    totalSeats,
+    attendingGuests,
+    attendingSeats,
+    declinedGuests,
+    pendingGuests,
+  };
+}
+
+export function generateGuestConfirmationWhatsAppMessage(guest, rsvp) {
+  const guestFormatted = formatGuestFullName(guest);
+  const isAttending = rsvp.attending === 'yes';
+  const statusEmoji = isAttending ? '🎉 Joyfully Accepting' : '💌 Regretfully Declining';
+  const seatsText = isAttending ? `\n👥 Attending Guests: ${rsvp.guestCount} ${rsvp.guestCount === 1 ? 'Seat' : 'Seats'}` : '';
+  const dietText = isAttending && rsvp.dietary ? `\n🍽️ Meal Preference: ${rsvp.dietary}` : '';
+  const noteText = rsvp.blessing ? `\n\n💬 Warm Wishes:\n"${rsvp.blessing}"` : '';
+  const guestIdText = (guest?.id || guest?.code) ? `\n🆔 Invitation ID: ${guest.id || guest.code}` : '';
+
+  return (
+    `💍 *WEDDING RSVP - Shantha & Lakshani* 💍\n\n` +
+    `👤 *Guest Name:* ${guestFormatted}\n` +
+    `✨ *Attendance Response:* ${statusEmoji}${seatsText}${dietText}${noteText}${guestIdText}\n\n` +
+    `📅 Event: Dec 12, 2026 • ${WEDDING_DETAILS.churchTitle} & ${WEDDING_DETAILS.receptionTitle}`
+  );
 }

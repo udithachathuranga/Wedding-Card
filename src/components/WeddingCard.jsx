@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import confetti from 'canvas-confetti';
 import {
-  Calendar,
   Clock,
   MapPin,
   Heart,
   Volume2,
   VolumeX,
   CalendarPlus,
-  Compass,
   Sparkles,
   MailOpen,
   ExternalLink,
   Church,
+  Check,
+  X,
 } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 import {
@@ -20,6 +21,8 @@ import {
   WEDDING_DETAILS,
   getGoogleCalendarUrl,
   downloadIcsFile,
+  getGuestRsvp,
+  saveRsvpResponse,
 } from '../utils/inviteHelper';
 import { weddingAudio } from '../utils/audioPlayer';
 
@@ -29,21 +32,60 @@ export default function WeddingCard({
 }) {
   const [isPlayingMusic, setIsPlayingMusic] = useState(weddingAudio.isPlaying);
 
-  const currentGuest = guest || {
+  const currentGuest = useMemo(() => guest || {
     title: 'Honored',
     name: 'Guest',
     companion: 'none',
     customSuffix: '',
     seats: 2,
     note: '',
-  };
+  }, [guest]);
 
   const guestFullName = formatGuestFullName(currentGuest);
   const companionBadge = getCompanionBadgeText(currentGuest.companion, currentGuest.customSuffix);
 
+  const [rsvpStatus, setRsvpStatus] = useState(() => getGuestRsvp(currentGuest));
+  const guestIdentifier = guest?.id || guest?.code || guest?.name || '';
+
+  useEffect(() => {
+    const handleRsvpSync = () => {
+      setRsvpStatus(getGuestRsvp(currentGuest));
+    };
+
+    window.addEventListener('wedding_rsvp_updated', handleRsvpSync);
+    window.addEventListener('storage', handleRsvpSync);
+    return () => {
+      window.removeEventListener('wedding_rsvp_updated', handleRsvpSync);
+      window.removeEventListener('storage', handleRsvpSync);
+    };
+  }, [guestIdentifier, currentGuest]);
+
   const toggleMusic = () => {
     const active = weddingAudio.toggle();
     setIsPlayingMusic(active);
+  };
+
+  const handleConfirmAttendance = (attendingChoice) => {
+    // 1-Click Direct Attendance Confirmation ('yes' | 'no')
+    if (attendingChoice === 'yes') {
+      confetti({
+        particleCount: 75,
+        spread: 65,
+        origin: { y: 0.65 },
+        colors: ['#ffe28a', '#d8a73f', '#e8758d'],
+      });
+    }
+
+    const rsvpRecord = {
+      guestId: currentGuest?.id || currentGuest?.code || 'LS-GUEST',
+      guestName: guestFullName,
+      attending: attendingChoice,
+      guestCount: attendingChoice === 'yes' ? (parseInt(currentGuest.seats, 10) || 2) : 0,
+      submittedAt: new Date().toISOString(),
+    };
+
+    saveRsvpResponse(rsvpRecord);
+    setRsvpStatus(rsvpRecord);
   };
 
   return (
@@ -70,17 +112,52 @@ export default function WeddingCard({
           )}
         </button>
 
-        {/* Envelope Replay Button */}
-        {onReplayEnvelope && (
+        <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Quick Attendance Scroll Button */}
           <button
-            onClick={onReplayEnvelope}
-            className="pointer-events-auto p-2.5 rounded-full bg-[#3e0a19]/85 hover:bg-[#520e22] border border-gold-400/40 shadow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif"
-            title="Re-open Envelope Animation"
+            onClick={() => {
+              const el = document.getElementById('rsvp-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`px-3 py-2 rounded-full border shadow backdrop-blur-md transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif ${
+              rsvpStatus?.attending === 'yes'
+                ? 'bg-emerald-950/80 hover:bg-emerald-900 border-emerald-400/50 text-emerald-200'
+                : rsvpStatus?.attending === 'no'
+                ? 'bg-burgundy-950/80 hover:bg-burgundy-900 border-gold-400/30 text-gold-300'
+                : 'bg-gold-500/20 hover:bg-gold-500/30 border-gold-400/60 text-gold-200 animate-pulse'
+            }`}
+            title="Confirm your wedding attendance"
           >
-            <MailOpen className="w-4 h-4 text-gold-400" />
-            <span className="hidden md:inline">View Envelope</span>
+            {rsvpStatus?.attending === 'yes' ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="hidden sm:inline">Attending</span>
+              </>
+            ) : rsvpStatus?.attending === 'no' ? (
+              <>
+                <X className="w-3.5 h-3.5 text-rose-400" />
+                <span className="hidden sm:inline">Declined</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+                <span>RSVP</span>
+              </>
+            )}
           </button>
-        )}
+
+          {/* Envelope Replay Button */}
+          {onReplayEnvelope && (
+            <button
+              onClick={onReplayEnvelope}
+              className="p-2.5 rounded-full bg-[#3e0a19]/85 hover:bg-[#520e22] border border-gold-400/40 shadow backdrop-blur-md text-gold-300 hover:text-gold-100 transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif"
+              title="Re-open Envelope Animation"
+            >
+              <MailOpen className="w-4 h-4 text-gold-400" />
+              <span className="hidden md:inline">View Envelope</span>
+            </button>
+          )}
+        </div>
       </header>
 
       {/* Hero Wedding Announcement Card */}
@@ -203,6 +280,90 @@ export default function WeddingCard({
       {/* Countdown Timer Section */}
       <section className="px-4">
         <CountdownTimer />
+      </section>
+
+      {/* Guest Attendance & RSVP Section */}
+      <section id="rsvp-section" className="py-8 px-4 max-w-xl mx-auto text-center">
+        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#460c1d]/90 via-[#320715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury backdrop-blur-md overflow-hidden text-center">
+          {/* Top golden ribbon accent */}
+          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
+
+          {/* Decorative Corner Stars */}
+          <div className="absolute top-3 left-3 text-gold-400/40 text-xs">✦</div>
+          <div className="absolute top-3 right-3 text-gold-400/40 text-xs">✦</div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 border border-gold-400/30 text-gold-300 text-[10px] sm:text-xs font-serif uppercase tracking-[0.2em] mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+            <span>Attendance Confirmation</span>
+            <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gold-gradient mb-2">
+            Will You Celebrate With Us?
+          </h2>
+
+          <p className="text-xs sm:text-sm text-gold-200/80 font-cormorant text-base max-w-md mx-auto mb-6">
+            Kindly confirm whether you will be able to join us for our holy matrimony and wedding celebration.
+          </p>
+
+          {/* Two Direct Attendance Confirmation Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Button 1: Confirm Attending */}
+            <button
+              type="button"
+              onClick={() => handleConfirmAttendance('yes')}
+              className={`p-6 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer ${
+                rsvpStatus?.attending === 'yes'
+                  ? 'bg-gradient-to-b from-gold-500/35 to-gold-600/20 border-gold-400 text-gold-100 shadow-gold-glow ring-2 ring-gold-400/50'
+                  : 'bg-black/40 hover:bg-black/60 border-gold-400/30 hover:border-gold-400/70 text-gold-200'
+              }`}
+            >
+              <Heart
+                className={`w-7 h-7 transition-transform group-hover:scale-110 ${
+                  rsvpStatus?.attending === 'yes' ? 'fill-gold-400 text-gold-400' : 'text-gold-400/80'
+                }`}
+              />
+              <span className="font-serif text-sm sm:text-base font-bold text-gold-gradient uppercase tracking-wider">
+                {rsvpStatus?.attending === 'yes' ? '✓ Accepts Joyfully' : 'Accepts Joyfully'}
+              </span>
+              <span className="text-xs text-gold-200/75 font-sans">
+                {rsvpStatus?.attending === 'yes' ? 'Confirmed: Attending' : 'Yes, I / We will attend'}
+              </span>
+            </button>
+
+            {/* Button 2: Confirm Not Attending */}
+            <button
+              type="button"
+              onClick={() => handleConfirmAttendance('no')}
+              className={`p-6 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer ${
+                rsvpStatus?.attending === 'no'
+                  ? 'bg-burgundy-950/80 border-rose-400/70 text-rose-200 shadow-inner ring-2 ring-rose-400/40'
+                  : 'bg-black/40 hover:bg-black/60 border-gold-400/30 hover:border-gold-400/70 text-ivory-200'
+              }`}
+            >
+              <X
+                className={`w-7 h-7 transition-transform group-hover:scale-110 ${
+                  rsvpStatus?.attending === 'no' ? 'text-rose-400' : 'text-gold-300/60'
+                }`}
+              />
+              <span className="font-serif text-sm sm:text-base font-bold text-gold-300 uppercase tracking-wider">
+                {rsvpStatus?.attending === 'no' ? '✓ Declines Regretfully' : 'Declines Regretfully'}
+              </span>
+              <span className="text-xs text-gold-300/60 font-sans">
+                {rsvpStatus?.attending === 'no' ? 'Confirmed: Not Attending' : 'Will be there in spirit'}
+              </span>
+            </button>
+          </div>
+
+          {/* Feedback note once clicked */}
+          {rsvpStatus && (
+            <p className="mt-4 text-xs font-serif text-gold-200/90 animate-fade-in-up">
+              {rsvpStatus.attending === 'yes'
+                ? '✨ Thank you! Your attendance has been confirmed.'
+                : '💌 Response recorded: You will be dearly missed in person, but with us in spirit.'}
+            </p>
+          )}
+        </div>
       </section>
 
       {/* Key Wedding Locations Section (Church Mass & Reception) */}

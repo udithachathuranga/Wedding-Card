@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import {
-  Link as LinkIcon,
   Copy,
   Check,
   QrCode,
@@ -13,6 +12,10 @@ import {
   PlusCircle,
   FileSpreadsheet,
   Search,
+  UserCheck,
+  UserX,
+  Clock,
+  RotateCcw,
 } from 'lucide-react';
 import {
   TITLE_OPTIONS,
@@ -20,9 +23,11 @@ import {
   generateInviteUrl,
   generateWhatsAppMessage,
   formatGuestFullName,
-  getSavedGuests,
   saveGuestToStorage,
   deleteGuestFromStorage,
+  getGuestsWithRsvp,
+  updateGuestAttendance,
+  getAttendanceStats,
 } from '../utils/inviteHelper';
 
 export default function AdminPanel({ onPreviewGuest, onClose }) {
@@ -40,13 +45,27 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedMsg, setCopiedMsg] = useState(false);
 
-  // Guest List from Storage
-  const [guestList, setGuestList] = useState([]);
+  // Guest List from Storage (with live RSVP merged)
+  const [guestList, setGuestList] = useState(() => getGuestsWithRsvp());
   const [searchQuery, setSearchQuery] = useState('');
+  const [attendanceFilter, setAttendanceFilter] = useState('all'); // 'all' | 'attending' | 'declined' | 'pending'
   const qrCanvasRef = useRef(null);
 
+  const refreshGuestList = () => {
+    setGuestList(getGuestsWithRsvp());
+  };
+
   useEffect(() => {
-    setGuestList(getSavedGuests());
+    const handleRsvpSync = () => {
+      refreshGuestList();
+    };
+
+    window.addEventListener('wedding_rsvp_updated', handleRsvpSync);
+    window.addEventListener('storage', handleRsvpSync);
+    return () => {
+      window.removeEventListener('wedding_rsvp_updated', handleRsvpSync);
+      window.removeEventListener('storage', handleRsvpSync);
+    };
   }, []);
 
   // Update QR Code whenever URL changes
@@ -82,6 +101,9 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
       companion,
       customSuffix: companion === 'custom' ? customSuffix.trim() : '',
       seats,
+      attendance: 'pending',
+      attendingCount: 0,
+      dietary: 'Standard',
       note: note.trim(),
       createdAt: new Date().toLocaleDateString(),
     };
@@ -90,8 +112,8 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
     setGeneratedGuest(newGuest);
     setGeneratedUrl(url);
 
-    const updated = saveGuestToStorage(newGuest);
-    setGuestList(updated);
+    saveGuestToStorage(newGuest);
+    refreshGuestList();
   };
 
   const handleCopyLink = (urlToCopy = generatedUrl) => {
@@ -108,12 +130,17 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
   };
 
   const handleDelete = (id) => {
-    const updated = deleteGuestFromStorage(id);
-    setGuestList(updated);
+    deleteGuestFromStorage(id);
+    refreshGuestList();
     if (generatedGuest?.id === id) {
       setGeneratedGuest(null);
       setGeneratedUrl('');
     }
+  };
+
+  const handleQuickStatusChange = (guestId, newStatus, currentSeats) => {
+    updateGuestAttendance(guestId, newStatus, newStatus === 'attending' ? (currentSeats || 2) : 0);
+    refreshGuestList();
   };
 
   const handleDownloadQr = () => {
@@ -136,7 +163,11 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         companion: 'none',
         customSuffix: '',
         seats: 1,
-        note: 'Special blessings for the holy ceremony',
+        attendance: 'attending',
+        attendingCount: 1,
+        dietary: 'Vegetarian',
+        blessing: 'May Almighty God abundantly bless this holy union and holy matrimony!',
+        note: 'Special blessings for the holy mass ceremony',
         createdAt: new Date().toLocaleDateString(),
       },
       {
@@ -146,6 +177,10 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         companion: 'family',
         customSuffix: '',
         seats: 4,
+        attendance: 'attending',
+        attendingCount: 4,
+        dietary: 'Standard Buffet',
+        blessing: 'Looking forward to celebrating with both of you! Big congratulations!',
         note: 'Looking forward to hosting your entire family!',
         createdAt: new Date().toLocaleDateString(),
       },
@@ -156,6 +191,10 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         companion: 'partner',
         customSuffix: '',
         seats: 2,
+        attendance: 'declined',
+        attendingCount: 0,
+        dietary: 'N/A',
+        blessing: 'So happy for you both! Sending our warmest love and blessings from afar.',
         note: 'Warmest regards',
         createdAt: new Date().toLocaleDateString(),
       },
@@ -166,19 +205,36 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         companion: 'none',
         customSuffix: '',
         seats: 1,
-        note: '',
+        attendance: 'pending',
+        attendingCount: 0,
+        dietary: 'Standard',
+        note: 'Colleague',
         createdAt: new Date().toLocaleDateString(),
       },
     ];
 
     samples.forEach((g) => saveGuestToStorage(g));
-    const updated = getSavedGuests();
-    setGuestList(updated);
+    refreshGuestList();
   };
 
   const handleExportCsv = () => {
     if (guestList.length === 0) return;
-    const headers = ['ID', 'Title', 'Name', 'Full Greeting', 'Scope', 'Reserved Seats', 'Personal Note', 'Date Added'];
+    const headers = [
+      'ID',
+      'Title',
+      'Name',
+      'Full Greeting',
+      'Scope',
+      'Reserved Seats',
+      'Attendance Status',
+      'Attending Headcount',
+      'Dietary Preference',
+      'Blessing Note',
+      'Confirmed Date',
+      'Personal Note',
+      'Date Added',
+    ];
+
     const rows = guestList.map((g) => [
       g.id,
       g.title,
@@ -186,24 +242,43 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
       `"${formatGuestFullName(g)}"`,
       g.companion,
       g.seats,
-      `"${g.note || ''}"`,
+      g.attendance === 'attending' ? 'Attending' : g.attendance === 'declined' ? 'Declined' : 'Pending',
+      g.attendance === 'attending' ? (g.attendingCount || g.seats) : 0,
+      `"${g.dietary || 'Standard'}"`,
+      `"${(g.blessing || '').replace(/"/g, '""')}"`,
+      g.rsvpAt || '—',
+      `"${(g.note || '').replace(/"/g, '""')}"`,
       g.createdAt,
     ]);
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const csvContent =
+      'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'Shantha-Lakshani-Wedding-GuestList.csv');
+    link.setAttribute('download', 'Lakshani-Shan-Wedding-RSVP-GuestList.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  const stats = getAttendanceStats(guestList);
+
   const filteredGuests = guestList.filter((g) => {
     const q = searchQuery.toLowerCase();
     const fullName = formatGuestFullName(g).toLowerCase();
-    return fullName.includes(q) || (g.note && g.note.toLowerCase().includes(q));
+    const matchesQuery =
+      fullName.includes(q) ||
+      (g.note && g.note.toLowerCase().includes(q)) ||
+      (g.id && g.id.toLowerCase().includes(q)) ||
+      (g.blessing && g.blessing.toLowerCase().includes(q));
+
+    if (!matchesQuery) return false;
+
+    if (attendanceFilter === 'attending') return g.attendance === 'attending';
+    if (attendanceFilter === 'declined') return g.attendance === 'declined';
+    if (attendanceFilter === 'pending') return !g.attendance || g.attendance === 'pending';
+    return true;
   });
 
   return (
@@ -507,119 +582,345 @@ export default function AdminPanel({ onPreviewGuest, onClose }) {
         </div>
       </div>
 
-      {/* Guest Directory / History Table */}
-      <div className="mt-10 bg-gradient-to-b from-[#2e0510] to-[#1c0209] p-6 rounded-2xl border border-gold-400/40 shadow-xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gold-400/20">
-          <div>
-            <h3 className="font-serif text-lg font-bold text-gold-200 flex items-center gap-2">
-              <Users className="w-5 h-5 text-gold-400" />
-              <span>Guest Invitation Directory ({guestList.length})</span>
-            </h3>
-            <p className="text-xs text-gold-200/60 font-cormorant text-sm">
-              All generated invitations are stored safely in local storage for easy tracking and sharing.
-            </p>
-          </div>
+        {/* Guest Directory & Live Attendance Tracker */}
+        <div className="mt-10 bg-gradient-to-b from-[#2e0510] to-[#1c0209] p-6 rounded-2xl border border-gold-400/40 shadow-xl space-y-6">
+          {/* Header & KPI Summary */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gold-400/20">
+            <div>
+                <h3 className="font-serif text-lg md:text-xl font-bold text-gold-200 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-gold-400" />
+                  <span>Guest Directory &amp; RSVP Attendance</span>
+                </h3>
+                  <p className="text-xs text-gold-200/60 font-cormorant text-base mt-0.5">
+                    Live attendance responses from invited guests and quick management controls.
+                  </p>
+                </div>
 
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gold-400/50" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search guest..."
-                className="pl-9 pr-3 py-1.5 rounded-xl bg-black/50 border border-gold-400/30 text-gold-100 text-xs focus:outline-none focus:border-gold-400 w-44 md:w-56"
-              />
+                <div className="flex items-center gap-2">
+                  {guestList.length > 0 && (
+                    <button
+                      onClick={handleExportCsv}
+                      className="px-3.5 py-1.5 rounded-xl bg-gold-500/15 hover:bg-gold-500/25 border border-gold-400/40 text-gold-200 text-xs font-serif uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
+                      title="Export guest list and RSVPs to CSV"
+                    >
+                      <FileSpreadsheet className="w-3.5 h-3.5 text-gold-300" />
+                      <span>Export Attendance CSV</span>
+                    </button>
+                  )}
+                </div>
             </div>
 
-            {guestList.length > 0 && (
-              <button
-                onClick={handleExportCsv}
-                className="px-3 py-1.5 rounded-xl bg-gold-500/10 hover:bg-gold-500/20 border border-gold-400/30 text-gold-300 text-xs font-serif uppercase tracking-wider flex items-center gap-1.5"
-                title="Export guest list to Excel/CSV"
-              >
-                <FileSpreadsheet className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Export CSV</span>
-              </button>
-            )}
-          </div>
-        </div>
+            {/* 4 Attendance KPI Summary Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              {/* Total Guests */}
+              <div className="p-3.5 sm:p-4 rounded-xl bg-black/40 border border-gold-400/30 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gold-500/15 border border-gold-400/30 flex items-center justify-center shrink-0 text-gold-300">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-serif tracking-wider text-gold-300/70 block">
+                    Total Invited
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-gold-gradient">
+                      {stats.totalGuests}
+                    </span>
+                    <span className="text-[11px] text-gold-300/60">({stats.totalSeats} seats)</span>
+                  </div>
+                </div>
+              </div>
 
-        {/* Directory Table */}
-        <div className="mt-4 overflow-x-auto">
-          {filteredGuests.length > 0 ? (
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-gold-400/20 text-gold-300/80 font-serif uppercase tracking-wider text-[11px]">
-                  <th className="py-2.5 px-3">Full Addressee</th>
-                  <th className="py-2.5 px-3">Title</th>
-                  <th className="py-2.5 px-3">Scope</th>
-                  <th className="py-2.5 px-3 text-center">Seats</th>
-                  <th className="py-2.5 px-3">Note</th>
-                  <th className="py-2.5 px-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gold-400/10 text-ivory-100/90 font-sans">
-                {filteredGuests.map((g) => {
-                  const url = generateInviteUrl(g);
-                  return (
-                    <tr key={g.id} className="hover:bg-gold-500/5 transition-colors">
-                      <td className="py-3 px-3 font-medium text-gold-100 font-serif text-sm">
-                        {formatGuestFullName(g)}
-                      </td>
-                      <td className="py-3 px-3 text-gold-300/80">{g.title}</td>
-                      <td className="py-3 px-3">
-                        <span className="px-2 py-0.5 rounded-full bg-gold-500/10 border border-gold-400/20 text-[10px] text-gold-200">
-                          {g.companion === 'family'
-                            ? 'Whole Family'
-                            : g.companion === 'partner'
-                              ? 'With Partner'
-                              : 'Single'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 text-center font-mono">{g.seats || 2}</td>
-                      <td className="py-3 px-3 text-gold-300/60 italic text-[11px] truncate max-w-[150px]">
-                        {g.note || '—'}
-                      </td>
-                      <td className="py-3 px-3 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => {
-                              if (onPreviewGuest) onPreviewGuest(g);
-                            }}
-                            className="p-1.5 rounded-lg hover:bg-gold-500/20 text-gold-300"
-                            title="Preview as this Guest"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleCopyLink(url)}
-                            className="p-1.5 rounded-lg hover:bg-gold-500/20 text-gold-300"
-                            title="Copy Guest URL"
-                          >
-                            <Copy className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(g.id)}
-                            className="p-1.5 rounded-lg hover:bg-red-500/20 text-red-400"
-                            title="Delete guest"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
+              {/* Attending / Coming */}
+              <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-950/30 border border-emerald-400/40 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0 text-emerald-300">
+                  <UserCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-serif tracking-wider text-emerald-300/80 block">
+                    Coming / Attending
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-emerald-300">
+                      {stats.attendingGuests}
+                    </span>
+                    <span className="text-[11px] text-emerald-200/70 font-semibold">
+                      ({stats.attendingSeats} guests coming)
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Declined / Not Coming */}
+              <div className="p-3.5 sm:p-4 rounded-xl bg-rose-950/30 border border-rose-400/40 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center shrink-0 text-rose-300">
+                  <UserX className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-serif tracking-wider text-rose-300/80 block">
+                    Not Coming / Declined
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-rose-300">
+                      {stats.declinedGuests}
+                    </span>
+                    <span className="text-[11px] text-rose-200/60">declined</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pending Response */}
+              <div className="p-3.5 sm:p-4 rounded-xl bg-amber-950/20 border border-amber-400/30 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-300">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-serif tracking-wider text-amber-300/80 block">
+                    Awaiting Reply
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-serif text-xl sm:text-2xl font-bold text-amber-300">
+                      {stats.pendingGuests}
+                    </span>
+                    <span className="text-[11px] text-amber-200/60">pending</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter Tabs and Search Bar */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2">
+              {/* Attendance Filter Tabs */}
+              <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-gold-400/20 text-xs">
+                <button
+                  onClick={() => setAttendanceFilter('all')}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-serif ${attendanceFilter === 'all'
+                      ? 'bg-gold-500/25 text-gold-100 font-bold border border-gold-400/40'
+                      : 'text-gold-300/70 hover:text-gold-100'
+                    }`}
+                >
+                  All Guests ({stats.totalGuests})
+                </button>
+                <button
+                  onClick={() => setAttendanceFilter('attending')}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-serif flex items-center gap-1.5 ${attendanceFilter === 'attending'
+                      ? 'bg-emerald-500/30 text-emerald-200 font-bold border border-emerald-400/50'
+                      : 'text-emerald-300/70 hover:text-emerald-200'
+                    }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                  <span>Coming ({stats.attendingGuests})</span>
+                </button>
+                <button
+                  onClick={() => setAttendanceFilter('declined')}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-serif flex items-center gap-1.5 ${attendanceFilter === 'declined'
+                      ? 'bg-rose-500/30 text-rose-200 font-bold border border-rose-400/50'
+                      : 'text-rose-300/70 hover:text-rose-200'
+                    }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-rose-400 inline-block" />
+                  <span>Not Coming ({stats.declinedGuests})</span>
+                </button>
+                <button
+                  onClick={() => setAttendanceFilter('pending')}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-serif flex items-center gap-1.5 ${attendanceFilter === 'pending'
+                      ? 'bg-amber-500/25 text-amber-200 font-bold border border-amber-400/40'
+                      : 'text-amber-300/70 hover:text-amber-200'
+                    }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
+                  <span>Pending ({stats.pendingGuests})</span>
+                </button>
+              </div>
+
+              {/* Search Box */}
+              <div className="relative">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gold-400/50" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by name, note, or ID..."
+                  className="pl-9 pr-3 py-1.5 rounded-xl bg-black/50 border border-gold-400/30 text-gold-100 text-xs focus:outline-none focus:border-gold-400 w-full md:w-64"
+                />
+              </div>
+            </div>
+
+            {/* Directory Table */}
+              <div className="overflow-x-auto">
+                {filteredGuests.length > 0 ? (
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-gold-400/20 text-gold-300/80 font-serif uppercase tracking-wider text-[11px]">
+                        <th className="py-2.5 px-3">Addressee &amp; ID</th>
+                        <th className="py-2.5 px-3">Scope</th>
+                        <th className="py-2.5 px-3 text-center">Reserved</th>
+                        <th className="py-2.5 px-3">Attendance Response</th>
+                        <th className="py-2.5 px-3">Personal Note</th>
+                        <th className="py-2.5 px-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gold-400/10 text-ivory-100/90 font-sans">
+                      {filteredGuests.map((g) => {
+                        const url = generateInviteUrl(g);
+                        const isAttending = g.attendance === 'attending';
+                        const isDeclined = g.attendance === 'declined';
+                        const isPending = !g.attendance || g.attendance === 'pending';
+
+                        return (
+                          <tr key={g.id} className="hover:bg-gold-500/5 transition-colors">
+                              {/* Name & ID */}
+                              <td className="py-3 px-3">
+                                <div className="font-medium text-gold-100 font-serif text-sm">
+                                  {formatGuestFullName(g)}
+                                </div>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-[10px] font-mono text-gold-400/60 uppercase">
+                                    {g.id}
+                                  </span>
+                                  {g.rsvpAt && (
+                                    <span className="text-[10px] text-gold-300/50">
+                                      • RSVP on {new Date(g.rsvpAt).toLocaleDateString()}
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+
+                              {/* Scope Badge */}
+                              <td className="py-3 px-3">
+                                  <span className="px-2 py-0.5 rounded-full bg-gold-500/10 border border-gold-400/20 text-[10px] text-gold-200 whitespace-nowrap">
+                                    {g.companion === 'family'
+                                      ? 'Whole Family'
+                                      : g.companion === 'partner'
+                                    ? 'With Partner'
+                            : 'Single'}
+                                  </span>
+                              </td>
+
+                                {/* Seats */}
+                                <td className="py-3 px-3 text-center font-mono text-gold-200">
+                                  {g.seats || 1}
+                                </td>
+
+                                {/* Attendance Status (Key User Request) */}
+                                <td className="py-3 px-3">
+                                  {isAttending ? (
+                                    <div className="space-y-1">
+                                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[11px] font-serif font-bold text-emerald-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                        <span>Coming ({g.attendingCount || g.seats || 1} Seats)</span>
+                                      </span>
+                                      {g.dietary && g.dietary !== 'N/A' && (
+                                        <div className="text-[10px] text-emerald-300/80 font-sans">
+                                          🍽️ {g.dietary}
+                                        </div>
+                                      )}
+                                      {g.blessing && (
+                                        <div className="text-[10px] text-gold-300/70 italic font-cormorant line-clamp-1 max-w-[180px]">
+                                          &ldquo;{g.blessing}&rdquo;
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : isDeclined ? (
+                                    <div className="space-y-1">
+                                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-[11px] font-serif font-bold text-rose-300">
+                                        <span className="w-2 h-2 rounded-full bg-rose-400" />
+                                        <span>Not Coming</span>
+                                      </span>
+                                      {g.blessing && (
+                                        <div className="text-[10px] text-rose-200/60 italic font-cormorant line-clamp-1 max-w-[180px]">
+                                          &ldquo;{g.blessing}&rdquo;
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-[10px] font-serif text-amber-300/90">
+                                      <Clock className="w-3 h-3 text-amber-400" />
+                                      <span>Pending Response</span>
+                                    </span>
+                                  )}
+                                </td>
+
+                                {/* Note */}
+                                <td className="py-3 px-3 text-gold-300/60 italic text-[11px] truncate max-w-[140px]">
+                                  {g.note || '—'}
+                                </td>
+
+                                {/* Actions */}
+                                <td className="py-3 px-3 text-right">
+                                  <div className="flex items-center justify-end gap-1.5">
+                                    {/* Quick Attendance Override Buttons */}
+                                    <button
+                                      onClick={() => handleQuickStatusChange(g.id, 'attending', g.seats)}
+                                      className={`p-1.5 rounded-lg transition-colors ${isAttending
+                                          ? 'bg-emerald-500/30 text-emerald-300'
+                                          : 'hover:bg-emerald-500/20 text-emerald-400/60 hover:text-emerald-300'
+                                        }`}
+                                      title="Mark as Coming (Attending)"
+                                    >
+                                      <UserCheck className="w-4 h-4" />
+                                    </button>
+
+                                    <button
+                                      onClick={() => handleQuickStatusChange(g.id, 'declined', 0)}
+                                      className={`p-1.5 rounded-lg transition-colors ${isDeclined
+                                          ? 'bg-rose-500/30 text-rose-300'
+                                          : 'hover:bg-rose-500/20 text-rose-400/60 hover:text-rose-300'
+                                        }`}
+                                      title="Mark as Not Coming (Declined)"
+                                    >
+                                      <UserX className="w-4 h-4" />
+                                    </button>
+
+                                    {/* Reset to Pending if previously answered */}
+                                    {!isPending && (
+                                      <button
+                                        onClick={() => handleQuickStatusChange(g.id, 'pending', 0)}
+                                        className="p-1.5 rounded-lg hover:bg-amber-500/20 text-amber-400/60 hover:text-amber-300 transition-colors"
+                                        title="Reset status to Pending"
+                                      >
+                                        <RotateCcw className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+
+                                    <button
+                                      onClick={() => {
+                                        if (onPreviewGuest) onPreviewGuest(g);
+                                      }}
+                                      className="p-1.5 rounded-lg hover:bg-gold-500/20 text-gold-300"
+                                      title="Preview as this Guest"
+                                    >
+                                      <Eye className="w-4 h-4" />
+                                    </button>
+
+                                    <button
+                                      onClick={() => handleCopyLink(url)}
+                                      className="p-1.5 rounded-lg hover:bg-gold-500/20 text-gold-300"
+                                      title="Copy Guest URL"
+                                    >
+                                      <Copy className="w-4 h-4" />
+                                    </button>
+
+                                    <button
+                                      onClick={() => handleDelete(g.id)}
+                                      className="p-1.5 rounded-lg hover:bg-red-500/20 text-red-400"
+                                      title="Delete guest"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                              );
                 })}
-              </tbody>
-            </table>
-          ) : (
-            <div className="py-8 text-center text-xs text-gold-300/60 font-cormorant text-base">
-              No guests found matching your search.
-            </div>
+                            </tbody>
+                          </table>
+                        ) : (
+                        <div className="py-10 text-center text-xs text-gold-300/60 font-cormorant text-base">
+                          No guests found matching the selected filter or search.
+                        </div>
           )}
-        </div>
-      </div>
-    </div>
-  );
+                      </div>
+                    </div>
+                  </div>
+                );
 }

@@ -1,59 +1,69 @@
 import { useState } from 'react';
 import { X, Heart, CheckCircle2, Send, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { formatGuestFullName, WEDDING_DETAILS } from '../utils/inviteHelper';
+import {
+  formatGuestFullName,
+  WEDDING_DETAILS,
+  saveRsvpResponse,
+  getGuestRsvp,
+  generateGuestConfirmationWhatsAppMessage,
+} from '../utils/inviteHelper';
 
 export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
-  const [attending, setAttending] = useState('yes'); // 'yes' | 'no'
-  const [guestCount, setGuestCount] = useState(guest?.seats ? parseInt(guest.seats, 10) : 2);
-  const [dietary, setDietary] = useState('Standard');
-  const [blessing, setBlessing] = useState('');
+  const guestFullName = formatGuestFullName(guest);
+  const existingRsvp = getGuestRsvp(guest);
+
+  const [attending, setAttending] = useState(existingRsvp?.attending || 'yes'); // 'yes' | 'no'
+  const [guestCount, setGuestCount] = useState(
+    existingRsvp?.guestCount || (guest?.seats ? parseInt(guest.seats, 10) : 2)
+  );
+  const [dietary, setDietary] = useState(existingRsvp?.dietary || 'Standard');
+  const [blessing, setBlessing] = useState(existingRsvp?.blessing || '');
   const [submitted, setSubmitted] = useState(false);
 
   if (!isOpen) return null;
-
-  const guestFullName = formatGuestFullName(guest);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (attending === 'yes') {
       confetti({
-        particleCount: 60,
-        spread: 60,
+        particleCount: 65,
+        spread: 65,
         origin: { y: 0.6 },
         colors: ['#ffe28a', '#d8a73f', '#e8758d'],
       });
     }
 
+    const rsvpRecord = {
+      guestId: guest?.id || guest?.code || 'LS-GUEST',
+      guestName: guestFullName,
+      attending,
+      guestCount: attending === 'yes' ? guestCount : 0,
+      dietary: attending === 'yes' ? dietary : 'N/A',
+      blessing,
+      submittedAt: new Date().toISOString(),
+    };
+
+    saveRsvpResponse(rsvpRecord);
     setSubmitted(true);
 
     if (onRsvpSubmitted) {
-      onRsvpSubmitted({
-        guestName: guestFullName,
-        attending,
-        guestCount: attending === 'yes' ? guestCount : 0,
-        dietary,
-        blessing,
-        submittedAt: new Date().toISOString(),
-      });
+      onRsvpSubmitted(rsvpRecord);
     }
   };
 
   const handleSendWhatsAppRsvp = () => {
-    const statusText = attending === 'yes' ? '🎉 Joyfully Accepting' : '💌 Regretfully Declining';
-    const countText = attending === 'yes' ? `\n👥 Attending Guests: ${guestCount}` : '';
-    const dietText = attending === 'yes' ? `\n🍽️ Meal Preference: ${dietary}` : '';
-    const noteText = blessing ? `\n\n💬 Warm Wishes:\n"${blessing}"` : '';
-
-    const text = encodeURIComponent(
-      `💍 *WEDDING RSVP - Shantha & Lakshani* 💍\n\n` +
-      `👤 *Guest Name:* ${guestFullName}\n` +
-      `✨ *Response:* ${statusText}${countText}${dietText}${noteText}\n\n` +
-      `📅 Event: Dec 12, 2026 at Jetwing Blue Hotel`
-    );
-
-    window.open(`https://wa.me/?text=${text}`, '_blank');
+    const rsvpPayload = {
+      attending,
+      guestCount: attending === 'yes' ? guestCount : 0,
+      dietary,
+      blessing,
+    };
+    const message = generateGuestConfirmationWhatsAppMessage(guest, rsvpPayload);
+    const cleanPhone = WEDDING_DETAILS.rsvpPhone.replace(/\D/g, ''); // 0760522561
+    const intlPhone = cleanPhone.startsWith('0') ? '94' + cleanPhone.slice(1) : cleanPhone;
+    window.open(`https://wa.me/${intlPhone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -75,7 +85,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                 Response Requested
               </span>
               <h3 className="font-serif text-2xl font-bold text-gold-gradient mt-1">
-                RSVP for the Wedding
+                Confirm Your Attendance
               </h3>
               <p className="text-xs text-gold-200/70 mt-1 font-cormorant text-base">
                 Honoring {guestFullName}
@@ -104,7 +114,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                   type="button"
                   onClick={() => setAttending('no')}
                   className={`p-3.5 rounded-xl border text-center transition-all ${attending === 'no'
-                    ? 'bg-burgundy-900/40 border-burgundy-400 text-gold-200'
+                    ? 'bg-burgundy-900/40 border-burgundy-400 text-gold-200 shadow-inner'
                     : 'bg-black/40 border-gold-400/20 text-ivory-200/60 hover:border-gold-400/40'
                     }`}
                 >
@@ -128,7 +138,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                       onChange={(e) => setGuestCount(parseInt(e.target.value, 10))}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-gold-400/30 text-gold-100 focus:outline-none focus:border-gold-400 text-sm"
                     >
-                      {[1, 2, 3, 4, 5, 6, 8].map((num) => (
+                      {[1, 2, 3, 4, 5, 6, 8, 10].map((num) => (
                         <option key={num} value={num} className="bg-burgundy-950 text-ivory-100">
                           {num} {num === 1 ? 'Guest' : 'Guests (Family / Party)'}
                         </option>
@@ -158,7 +168,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                       <option value="Seafood Specialty" className="bg-burgundy-950 text-ivory-100">
                         Seafood Special
                       </option>
-                      <option value="Kids Menu" className="bg-burgundy-950 text-ivory-100">
+                      <option value="Kids Menu Included" className="bg-burgundy-950 text-ivory-100">
                         Including Children Meals
                       </option>
                     </select>
@@ -187,7 +197,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                   className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-burgundy-950 font-serif font-bold text-xs uppercase tracking-widest shadow-gold-glow hover:shadow-gold-glow-lg transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4 text-burgundy-900" />
-                  <span>Confirm RSVP</span>
+                  <span>Confirm Attendance Response</span>
                 </button>
               </div>
             </form>
@@ -201,8 +211,8 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
             </h3>
             <p className="text-sm text-gold-200/90 font-cormorant text-lg">
               {attending === 'yes'
-                ? `We are delighted that you will join us at Jetwing Blue on December 12 to celebrate our wedding!`
-                : `Thank you for letting us know. You will be dearly missed in person, but with us in spirit!`}
+                ? `We are delighted that you will join us on December 12 at ${WEDDING_DETAILS.churchTitle} and ${WEDDING_DETAILS.receptionTitle} to celebrate our wedding!`
+                : `Thank you for letting us know. You will be dearly missed in person, but forever in our thoughts and prayers!`}
             </p>
 
             <div className="pt-4 space-y-3">
@@ -212,7 +222,7 @@ export default function RsvpModal({ guest, isOpen, onClose, onRsvpSubmitted }) {
                 className="w-full py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-sans font-semibold text-xs tracking-wider uppercase transition-colors flex items-center justify-center gap-2 shadow-lg"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
-                <span>Send Confirmation Directly via WhatsApp</span>
+                <span>Notify Shantha &amp; Lakshani via WhatsApp</span>
               </button>
 
               <button
