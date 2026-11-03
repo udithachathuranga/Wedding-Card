@@ -48,23 +48,23 @@ export default function EnvelopeModal({ onOpened }) {
     setTimeout(() => {
       setIsOpened(true);
       if (onOpened) onOpened();
-    }, 1400);
-  };
+  }, 1600);
+};
 
-  if (isOpened) return null;
+if (isOpened) return null;
 
-  return (
-    <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a030a]/92 backdrop-blur-md transition-opacity duration-700 ${isOpening ? 'opacity-90' : 'opacity-100'
-        }`}
-    >
-      {/* Background radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.22)_0%,rgba(175,28,64,0.15)_40%,transparent_70%)] pointer-events-none" />
+return (
+  <div
+    className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a030a]/95 backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpening ? 'opacity-0 scale-110 pointer-events-none delay-1000' : 'opacity-100 scale-100'
+      }`}
+  >
+    {/* Background radial glow */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.22)_0%,rgba(175,28,64,0.15)_40%,transparent_70%)] pointer-events-none" />
 
-      {/* Main Envelope Presentation Container */}
-      <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
-        {/* Top Floating Prompt */}
-        <div className="text-center mb-6 animate-fade-in-up">
+    {/* Main Envelope Presentation Container */}
+    <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
+      {/* Top Floating Prompt */}
+        <div className={`text-center mb-6 transition-all duration-700 ${isOpening ? 'opacity-0 -translate-y-6 scale-90' : 'opacity-100 translate-y-0'}`}>
           <p className="font-serif tracking-[0.3em] text-xs text-gold-300 uppercase mb-2 flex items-center justify-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-gold-400" />
             Royal Wedding Invitation
@@ -78,7 +78,7 @@ export default function EnvelopeModal({ onOpened }) {
         {/* The 3D Physical-Look Envelope */}
         <div
           onClick={handleOpenEnvelope}
-          className={`group cursor-pointer relative w-full aspect-[16/11] max-w-[440px] rounded-2xl bg-gradient-to-br from-[#631227] via-[#460918] to-[#2c050f] border-2 border-gold-400/60 shadow-luxury transition-all duration-700 perspective-1000 transform ${isOpening ? 'scale-105 -translate-y-4' : 'hover:scale-[1.02] hover:border-gold-300'
+          className={`group cursor-pointer relative w-full aspect-[16/11] max-w-[440px] rounded-2xl bg-gradient-to-br from-[#631227] via-[#460918] to-[#2c050f] border-2 border-gold-400/60 shadow-luxury transition-all duration-700 perspective-1000 transform ${isOpening ? 'scale-105 translate-y-2' : 'hover:scale-[1.02] hover:border-gold-300'
             }`}
           role="button"
           tabIndex={0}
@@ -88,15 +88,32 @@ export default function EnvelopeModal({ onOpened }) {
           }}
         >
           {/* Subtle envelope texture and gold corner brackets */}
-          <div className="absolute inset-2 border border-gold-400/25 rounded-xl pointer-events-none" />
-          {/* <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-gold-400/60" />
-          <div className="absolute top-4 right-4 w-5 h-5 border-t-2 border-r-2 border-gold-400/60" />
-          <div className="absolute bottom-4 left-4 w-5 h-5 border-b-2 border-l-2 border-gold-400/60" />
-          <div className="absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 border-gold-400/60" /> */}
+          <div className="absolute inset-2 border border-gold-400/25 rounded-xl pointer-events-none z-10" />
 
-          {/* Envelope Flap Lines (Simulated Triangular Flap) */}
+          {/* Morphing Inner Gold Wedding Letter that glides up and expands */}
+          <div
+            className={`absolute inset-x-5 top-5 h-[90%] rounded-xl bg-gradient-to-b from-[#3a0815] via-[#2a050f] to-[#1a0208] border-2 border-gold-400 shadow-2xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col items-center justify-center text-center p-4 ${isOpening
+                ? '-translate-y-36 scale-110 opacity-100 shadow-[0_25px_60px_rgba(215,178,88,0.5)] z-20'
+                : 'translate-y-2 scale-90 opacity-0 z-0 pointer-events-none'
+              }`}
+          >
+            <div className="w-12 h-12 rounded-full border-2 border-gold-400/60 p-1 mb-2 bg-black/50 shadow-gold-glow flex items-center justify-center">
+              <span className="font-serif text-sm font-black text-gold-gradient">L &amp; S</span>
+            </div>
+            <span className="font-serif text-[10px] tracking-[0.25em] uppercase text-gold-300 font-bold block">
+              Royal Invitation
+            </span>
+            <h4 className="font-script text-3xl sm:text-4xl text-gold-foil leading-tight mt-1">
+              Lakshani &amp; Shan
+            </h4>
+            <span className="text-[10px] font-sans font-semibold tracking-[0.2em] text-gold-200 uppercase mt-2 block">
+              12 • 12 • 26
+            </span>
+          </div>
+
+          {/* Envelope Flap Lines (Simulated Triangular Flap that rotates 180deg backward) */}
           <svg
-            className={`absolute top-0 inset-x-0 w-full h-[55%] pointer-events-none transition-transform duration-700 origin-top ${isOpening ? '-rotate-x-180 opacity-20' : ''
+            className={`absolute top-0 inset-x-0 w-full h-[55%] pointer-events-none transition-transform duration-700 origin-top z-10 ${isOpening ? '-rotate-x-180 opacity-15' : ''
               }`}
             viewBox="0 0 440 180"
             fill="none"
@@ -121,29 +138,11 @@ export default function EnvelopeModal({ onOpened }) {
             </defs>
           </svg>
 
-          {/* Guest Addressee Card Plate (Mounted on front of envelope) */}
-          {/* <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[86%] p-4 rounded-xl bg-gradient-to-b from-[#180308]/90 via-[#270610]/85 to-[#160207]/90 border border-gold-400/40 shadow-inner text-center z-10 backdrop-blur-sm">
-            <span className="text-[10px] tracking-[0.25em] uppercase font-sans text-gold-300/80 font-semibold block mb-1">
-              — Exclusive Invitation For —
-            </span> */}
-
-          {/* Recipient Full Name */}
-          {/* <h3 className="font-serif text-lg md:text-xl font-bold text-gold-gradient tracking-wide leading-tight py-0.5">
-              {guestFullName}
-            </h3> */}
-
-          {/* Companion / Family Scope Indicator */}
-          {/* <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-[11px] text-gold-200 font-sans">
-              <Heart className="w-3 h-3 fill-gold-400 text-gold-400" />
-              <span>{companionBadge}</span>
-            </div>
-          </div> */}
-
           {/* The Golden Wax Seal Stamp in the Center */}
           <div
-            className={`absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-700 ${isOpening
-              ? 'scale-150 opacity-0 rotate-45'
-              : 'hover:scale-110 active:scale-95'
+            className={`absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpening
+                ? 'scale-150 opacity-0 rotate-45 pointer-events-none'
+                : 'hover:scale-110 active:scale-95'
               }`}
           >
             <div className="relative w-20 h-20 md:w-22 md:h-22 rounded-full bg-wax-gold shadow-gold-glow flex items-center justify-center border-4 border-[#82590e] p-1">
@@ -166,20 +165,11 @@ export default function EnvelopeModal({ onOpened }) {
           </div>
         </div>
 
-        {/* Action Button & Instructions */}
-        {/* <div className="mt-8 flex flex-col items-center gap-3">
-          <button
-            onClick={handleOpenEnvelope}
-            disabled={isOpening}
-            className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-burgundy-950 font-serif font-bold text-sm tracking-widest uppercase shadow-gold-glow hover:shadow-gold-glow-lg transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50"
-          >
-            <Sparkles className="w-4 h-4 text-burgundy-900 group-hover:rotate-45 transition-transform" />
-            <span>{isOpening ? 'Opening Invitation...' : 'Tap Wax Seal To Open'}</span>
-            <Sparkles className="w-4 h-4 text-burgundy-900 group-hover:-rotate-45 transition-transform" />
-          </button>
-
-        </div> */}
+        {/* Bottom instruction hint */}
+        <p className={`mt-5 text-xs text-gold-300/80 font-serif tracking-widest uppercase transition-opacity duration-500 ${isOpening ? 'opacity-0' : 'opacity-100 animate-pulse'}`}>
+          ✦ Tap Envelope Seal to Open ✦
+        </p>
       </div>
     </div>
-  );
+    );
 }

@@ -60,6 +60,30 @@ export default function WeddingCard({
     };
   }, [guestIdentifier, currentGuest]);
 
+  // PowerPoint Morph style scroll reveal observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -30px 0px',
+      }
+    );
+
+    const elements = document.querySelectorAll(
+      '.morph-reveal, .morph-reveal-left, .morph-reveal-right'
+    );
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const toggleMusic = () => {
     const active = weddingAudio.toggle();
     setIsPlayingMusic(active);
@@ -163,8 +187,8 @@ export default function WeddingCard({
       {/* Hero Wedding Announcement Card */}
       <section className="relative pt-20 md:pt-28 pb-12 px-4 max-w-3xl mx-auto text-center">
         {/* Iconic Date Crest (12 • 12 • 26 & Monogram L & S) */}
-        <div className="relative inline-flex flex-col items-center justify-center mb-6">
-          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-[#4e0c1c]/85 via-[#340714]/85 to-[#24040d]/90 backdrop-blur-sm animate-float-gentle">
+        <div className="relative inline-flex flex-col items-center justify-center mb-6 animate-morph-scale">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-[#4e0c1c]/85 via-[#340714]/85 to-[#24040d]/90 backdrop-blur-sm animate-float-gentle morph-transition hover:scale-105">
             <div className="w-full h-full rounded-full border border-dashed border-gold-400/40 flex flex-col items-center justify-center px-3">
               <div className="font-serif text-2xl sm:text-3xl whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
                 <span className="text-[1.5em] font-black text-gold-gradient">L</span>
@@ -180,7 +204,7 @@ export default function WeddingCard({
         </div>
 
         {/* Parents / Hosts Official Invitation Header (from actual card) */}
-        <div className="space-y-1 animate-fade-in-up">
+        <div className="space-y-1 animate-morph-in delay-100">
           <p className="font-serif text-xs sm:text-sm text-gold-200/90 tracking-[0.2em] uppercase font-medium">
             {WEDDING_DETAILS.groomParents} Together with
           </p>
@@ -196,15 +220,15 @@ export default function WeddingCard({
 
         {/* Couple Names (Lakshani & Shan) */}
         <div className="space-y-2 mb-6">
-          <h1 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)]">
+          <h1 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)] animate-morph-in delay-200">
             {WEDDING_DETAILS.coupleTitle}
           </h1>
-          <p className="pb-6 font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase">
+          <p className="pb-6 font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase animate-morph-in delay-200">
             ({WEDDING_DETAILS.bride} &amp; {WEDDING_DETAILS.groom})
           </p>
 
           {/* Personalized Guest Badge / Addressee Callout */}
-          <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#460c1d]/90 via-[#330715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden">
+          <div className="my-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#460c1d]/90 via-[#330715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury max-w-xl mx-auto backdrop-blur-md relative overflow-hidden animate-morph-pop delay-300 morph-transition hover:border-gold-300 hover:shadow-gold-glow">
             {/* Subtle gold ribbon top accent */}
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
@@ -218,7 +242,7 @@ export default function WeddingCard({
             </h3>
 
             {/* Companion / Family Scope Pill */}
-            <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 text-xs sm:text-sm text-gold-200 font-sans shadow-sm">
+            <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 text-xs sm:text-sm text-gold-200 font-sans shadow-sm morph-transition hover:scale-105">
               <Heart className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
               <span className="font-medium">{companionBadge}</span>
             </div>
@@ -231,39 +255,30 @@ export default function WeddingCard({
 
 
             {currentGuest?.note && (
-              <div className="mt-4 p-2 sm:p-2 rounded-xl bg-gradient-to-r from-gold-500/20 via-gold-400/30 to-gold-500/20 border-2 border-gold-400 shadow-gold-glow max-w-sm mx-auto flex items-center justify-center gap-3 text-center">
+              <div className="mt-4 p-2 sm:p-2 rounded-xl bg-gradient-to-r from-gold-500/20 via-gold-400/30 to-gold-500/20 border-2 border-gold-400 shadow-gold-glow max-w-sm mx-auto flex items-center justify-center gap-3 text-center morph-transition hover:scale-105">
                 <div className="flex items-center gap-2.5">
-
                   <div>
                     <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-gold-300 font-bold block">
                       &ldquo;{currentGuest.note}&rdquo;
                     </span>
-                    {/* <span className="text-[11px] text-gold-200/80 font-sans">
-                    sdfsdf
-                  </span> */}
                   </div>
                 </div>
-                {/* <div className="px-3.5 py-1.5 w-full rounded-lg bg-gradient-to-b from-[#3a0715] to-[#1c0209] border border-gold-300 shadow-inner text-center">
-                  <span className="font-serif font-black text-base sm:text-lg text-gold-gradient tracking-wider whitespace-nowrap">
-                    &ldquo;{currentGuest.note}&rdquo;
-                  </span>
-                </div> */}
               </div>
             )}
 
 
           </div>
 
-          <p className="font-cormorant italic text-lg sm:text-xl md:text-2xl text-gold-200/90 max-w-xl mx-auto leading-relaxed pt-2">
+          <p className="font-cormorant italic text-lg sm:text-xl md:text-2xl text-gold-200/90 max-w-xl mx-auto leading-relaxed pt-2 animate-morph-in delay-400">
             Invite you to join them on their special day
           </p>
-          <div className="inline-block px-8 py-4 rounded-full bg-gold-500/10 border border-gold-400/30 text-lg sm:text-lg font-serif font-bold text-gold-200 tracking-widest uppercase mt-2">
+          <div className="inline-block px-8 py-4 rounded-full bg-gold-500/10 border border-gold-400/30 text-lg sm:text-lg font-serif font-bold text-gold-200 tracking-widest uppercase mt-2 animate-morph-in delay-400 morph-transition hover:scale-105">
             {WEDDING_DETAILS.dateFormatted}
           </div>
         </div>
 
         {/* Hero Photo Showcase */}
-        <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-2xl mx-auto">
+        <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-2xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300">
           <img
             src="/images/wedding_hero.jpg"
             alt="Lakshani and Shan wedding celebration"
@@ -278,13 +293,13 @@ export default function WeddingCard({
       </section>
 
       {/* Countdown Timer Section */}
-      <section className="px-4">
+      <section className="px-4 morph-reveal">
         <CountdownTimer />
       </section>
 
       {/* Guest Attendance & RSVP Section */}
-      <section id="rsvp-section" className="py-8 px-4 max-w-xl mx-auto text-center">
-        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#460c1d]/90 via-[#320715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury backdrop-blur-md overflow-hidden text-center">
+      <section id="rsvp-section" className="py-8 px-4 max-w-xl mx-auto text-center morph-reveal">
+        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#460c1d]/90 via-[#320715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury backdrop-blur-md overflow-hidden text-center morph-transition">
           {/* Top golden ribbon accent */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
@@ -312,15 +327,17 @@ export default function WeddingCard({
             <button
               type="button"
               onClick={() => handleConfirmAttendance('yes')}
-              className={`p-6 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer ${
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${
                 rsvpStatus?.attending === 'yes'
-                  ? 'bg-gradient-to-b from-gold-500/35 to-gold-600/20 border-gold-400 text-gold-100 shadow-gold-glow ring-2 ring-gold-400/50'
-                  : 'bg-black/40 hover:bg-black/60 border-gold-400/30 hover:border-gold-400/70 text-gold-200'
+                  ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
+                  : rsvpStatus?.attending === 'no'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
               }`}
             >
               <Heart
-                className={`w-7 h-7 transition-transform group-hover:scale-110 ${
-                  rsvpStatus?.attending === 'yes' ? 'fill-gold-400 text-gold-400' : 'text-gold-400/80'
+                className={`w-7 h-7 morph-spring ${
+                  rsvpStatus?.attending === 'yes' ? 'scale-125 fill-gold-400 text-gold-400 animate-pulse' : 'text-gold-400/80'
                 }`}
               />
               <span className="font-serif text-sm sm:text-base font-bold text-gold-gradient uppercase tracking-wider">
@@ -335,15 +352,17 @@ export default function WeddingCard({
             <button
               type="button"
               onClick={() => handleConfirmAttendance('no')}
-              className={`p-6 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer ${
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${
                 rsvpStatus?.attending === 'no'
-                  ? 'bg-burgundy-950/80 border-rose-400/70 text-rose-200 shadow-inner ring-2 ring-rose-400/40'
-                  : 'bg-black/40 hover:bg-black/60 border-gold-400/30 hover:border-gold-400/70 text-ivory-200'
+                  ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
+                  : rsvpStatus?.attending === 'yes'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
               }`}
             >
               <X
-                className={`w-7 h-7 transition-transform group-hover:scale-110 ${
-                  rsvpStatus?.attending === 'no' ? 'text-rose-400' : 'text-gold-300/60'
+                className={`w-7 h-7 morph-spring ${
+                  rsvpStatus?.attending === 'no' ? 'scale-125 text-rose-400' : 'text-gold-300/60'
                 }`}
               />
               <span className="font-serif text-sm sm:text-base font-bold text-gold-300 uppercase tracking-wider">
@@ -368,7 +387,7 @@ export default function WeddingCard({
 
       {/* Key Wedding Locations Section (Church Mass & Reception) */}
       <section className="py-12 px-4 max-w-3xl mx-auto">
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 morph-reveal">
           <p className="font-serif tracking-[0.25em] text-xs text-gold-300 uppercase mb-2">
             Order of the Day
           </p>
@@ -381,7 +400,7 @@ export default function WeddingCard({
         {/* Two Venue Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Card 1: Church Mass */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-left morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
             <div>
               <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
@@ -394,7 +413,7 @@ export default function WeddingCard({
               </div>
 
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 transition-transform">
+                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
                   <Church className="w-5 h-5" />
                 </div>
                 <div>
@@ -414,7 +433,7 @@ export default function WeddingCard({
                 href={WEDDING_DETAILS.churchMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 text-center"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
               >
                 <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
                 <span>Open Church in Google Maps</span>
@@ -424,7 +443,7 @@ export default function WeddingCard({
           </div>
 
           {/* Card 2: Reception */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 transition-all">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-right delay-150 morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
             <div>
               <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
                 <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
@@ -437,7 +456,7 @@ export default function WeddingCard({
               </div>
 
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 transition-transform">
+                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -457,7 +476,7 @@ export default function WeddingCard({
                 href={WEDDING_DETAILS.receptionMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 text-center"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
               >
                 <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
                 <span>Open Reception in Google Maps</span>
@@ -469,8 +488,8 @@ export default function WeddingCard({
 
 
         {/* Save The Date / Calendar Action Bar */}
-        <div className="max-w-lg mx-auto">
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#380816]/90 to-[#22040e]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg hover:border-gold-400/60 transition-colors">
+        <div className="max-w-lg mx-auto morph-reveal">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#380816]/90 to-[#22040e]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg morph-transition hover:border-gold-400/60 hover:shadow-gold-glow">
             <div>
               <CalendarPlus className="w-8 h-8 text-gold-400 mx-auto mb-2 animate-pulse" />
               <h4 className="font-serif text-base font-bold text-gold-100 uppercase tracking-wider">
@@ -485,14 +504,14 @@ export default function WeddingCard({
                 href={getGoogleCalendarUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors font-bold flex flex-col items-center justify-center leading-tight min-h-[54px]"
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
               >
                 <span>Google</span>
                 <span className="mt-0.5">Calendar</span>
               </a>
               <button
                 onClick={downloadIcsFile}
-                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider transition-colors font-bold flex flex-col items-center justify-center leading-tight min-h-[54px]"
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
               >
                 <span>Apple / Outlook</span>
                 <span className="mt-0.5">(.ics)</span>
@@ -503,7 +522,7 @@ export default function WeddingCard({
       </section>
 
       {/* Royal Footer */}
-      <footer className="mt-12 pt-10 border-t border-gold-400/20 text-center px-4 max-w-xl mx-auto">
+      <footer className="mt-12 pt-10 border-t border-gold-400/20 text-center px-4 max-w-xl mx-auto morph-reveal">
         {/* <span className="font-serif text-3xl font-black text-gold-gradient block mb-2 whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
           <span>L</span>
           <span className="text-[0.58em] font-normal mx-2 self-center opacity-95 leading-none">&amp;</span>

@@ -82,7 +82,7 @@ export default function CountdownTimer() {
           {timeUnits.map((unit, index) => (
             <div
               key={index}
-              className="group relative flex flex-col items-center justify-center p-3 md:p-4 rounded-xl bg-gradient-to-b from-[#4b0c1e]/90 to-[#2c0511] border border-gold-500/30 shadow-inner hover:border-gold-400/70 transition-all duration-300 hover:scale-105"
+              className="group relative flex flex-col items-center justify-center p-3 md:p-4 rounded-xl bg-gradient-to-b from-[#4b0c1e]/90 to-[#2c0511] border border-gold-500/30 shadow-inner hover:border-gold-400/70 morph-transition hover:-translate-y-1 hover:scale-105 hover:shadow-gold-glow"
             >
               {/* Digit with metallic gold glow */}
               <span className="font-serif text-2xl md:text-4xl lg:text-5xl font-bold text-gold-gradient tracking-tight">
