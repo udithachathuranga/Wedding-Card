@@ -223,7 +223,7 @@ export default function WeddingCard({
             {WEDDING_DETAILS.coupleTitle}
           </h1>
           <p className="pb-6 font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase animate-morph-in delay-200">
-            ({WEDDING_DETAILS.bride} &amp; {WEDDING_DETAILS.groom})
+            ({WEDDING_DETAILS.groom} &amp; {WEDDING_DETAILS.bride})
           </p>
 
           {/* Personalized Guest Badge / Addressee Callout */}
