@@ -98,13 +98,13 @@ export default function EnvelopeModal({ onOpened }) {
               }`}
           >
             <div className="w-12 h-12 rounded-full border-2 border-gold-400/60 p-1 mb-2 bg-black/50 shadow-gold-glow flex items-center justify-center">
-              <span className="font-serif text-sm font-black text-gold-gradient">S &amp; L</span>
+              <span className="font-serif text-sm font-black text-gold-gradient">L &amp; S</span>
             </div>
             <span className="font-serif text-[10px] tracking-[0.25em] uppercase text-gold-300 font-bold block">
               Royal Invitation
             </span>
             <h4 className="font-script text-3xl sm:text-4xl text-gold-foil leading-tight mt-1">
-              Shan &amp; Lakshani
+              Lakshani &amp; Shan
             </h4>
             <span className="text-[10px] font-sans font-semibold tracking-[0.2em] text-gold-200 uppercase mt-2 block">
               12 • 12 • 26
