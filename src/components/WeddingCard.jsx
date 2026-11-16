@@ -287,7 +287,8 @@ export default function WeddingCard({
             // src="/images/wedding_hero.jpg"
             // src="/images/wedding_hero_cropped.jpg"
             // src="/images/wedding_hero_royal_enhanced.jpg"
-            src="/images/wedding_hero_nobg_enhanced.png"
+            // src="/images/wedding_hero_nobg_enhanced.png"
+            src="/images/wedding_hero_burgundy_bg.jpg"
             alt="Shan and Lakshani wedding celebration"
             className="relative z-10 w-full h-[420px] sm:h-[520px] md:h-[560px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
           />
