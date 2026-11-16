@@ -143,13 +143,12 @@ export default function WeddingCard({
               const el = document.getElementById('rsvp-section');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className={`px-3 py-2 rounded-full border shadow backdrop-blur-md transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif ${
-              rsvpStatus?.attending === 'yes'
+            className={`px-3 py-2 rounded-full border shadow backdrop-blur-md transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-serif ${rsvpStatus?.attending === 'yes'
                 ? 'bg-emerald-950/80 hover:bg-emerald-900 border-emerald-400/50 text-emerald-200'
                 : rsvpStatus?.attending === 'no'
-                ? 'bg-burgundy-950/80 hover:bg-burgundy-900 border-gold-400/30 text-gold-300'
-                : 'bg-gold-500/20 hover:bg-gold-500/30 border-gold-400/60 text-gold-200 animate-pulse'
-            }`}
+                  ? 'bg-burgundy-950/80 hover:bg-burgundy-900 border-gold-400/30 text-gold-300'
+                  : 'bg-gold-500/20 hover:bg-gold-500/30 border-gold-400/60 text-gold-200 animate-pulse'
+              }`}
             title="Confirm your wedding attendance"
           >
             {rsvpStatus?.attending === 'yes' ? (
@@ -186,14 +185,14 @@ export default function WeddingCard({
 
       {/* Hero Wedding Announcement Card */}
       <section className="relative pt-20 md:pt-28 pb-12 px-4 max-w-3xl mx-auto text-center">
-        {/* Iconic Date Crest (12 • 12 • 26 & Monogram L & S) */}
+        {/* Iconic Date Crest (12 • 12 • 26 & Monogram S & L) */}
         <div className="relative inline-flex flex-col items-center justify-center mb-6 animate-morph-scale">
           <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2 border-gold-400/60 p-2.5 shadow-gold-glow flex items-center justify-center bg-gradient-to-br from-[#4e0c1c]/85 via-[#340714]/85 to-[#24040d]/90 backdrop-blur-sm animate-float-gentle morph-transition hover:scale-105">
             <div className="w-full h-full rounded-full border border-dashed border-gold-400/40 flex flex-col items-center justify-center px-3">
               <div className="font-serif text-2xl sm:text-3xl whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
-                <span className="text-[1.5em] font-black text-gold-gradient">L</span>
-                <span className="font-normal mx-1.5 self-center text-gold-300 text-xl sm:text-2xl leading-none">&amp;</span>
                 <span className="text-[1.5em] font-black text-gold-gradient">S</span>
+                <span className="font-normal mx-1.5 self-center text-gold-300 text-xl sm:text-2xl leading-none">&amp;</span>
+                <span className="text-[1.5em] font-black text-gold-gradient">L</span>
               </div>
               <span className="text-[10px] sm:text-xs font-sans font-semibold tracking-[0.16em] text-gold-300/90 uppercase whitespace-nowrap mt-2.5 select-none">
                 {WEDDING_DETAILS.shortDate}
@@ -218,13 +217,13 @@ export default function WeddingCard({
 
 
 
-        {/* Couple Names (Lakshani & Shan) */}
+        {/* Couple Names (Shan & Lakshani) */}
         <div className="space-y-2 mb-6">
           <h1 className="font-script text-5xl sm:text-6xl md:text-7xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block filter drop-shadow-[0_2px_12px_rgba(200,153,50,0.4)] animate-morph-in delay-200">
             {WEDDING_DETAILS.coupleTitle}
           </h1>
           <p className="pb-6 font-serif text-xs sm:text-sm text-gold-300/70 tracking-widest uppercase animate-morph-in delay-200">
-            ({WEDDING_DETAILS.bride} &amp; {WEDDING_DETAILS.groom})
+            ({WEDDING_DETAILS.groom} &amp; {WEDDING_DETAILS.bride})
           </p>
 
           {/* Personalized Guest Badge / Addressee Callout */}
@@ -281,7 +280,7 @@ export default function WeddingCard({
         <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-2xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300">
           <img
             src="/images/wedding_hero.jpg"
-            alt="Lakshani and Shan wedding celebration"
+            alt="Shan and Lakshani wedding celebration"
             className="w-full h-[280px] sm:h-[380px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
@@ -327,18 +326,16 @@ export default function WeddingCard({
             <button
               type="button"
               onClick={() => handleConfirmAttendance('yes')}
-              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${
-                rsvpStatus?.attending === 'yes'
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'yes'
                   ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
                   : rsvpStatus?.attending === 'no'
-                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
-                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
-              }`}
+                    ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
+                    : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                }`}
             >
               <Heart
-                className={`w-7 h-7 morph-spring ${
-                  rsvpStatus?.attending === 'yes' ? 'scale-125 fill-gold-400 text-gold-400 animate-pulse' : 'text-gold-400/80'
-                }`}
+                className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'yes' ? 'scale-125 fill-gold-400 text-gold-400 animate-pulse' : 'text-gold-400/80'
+                  }`}
               />
               <span className="font-serif text-sm sm:text-base font-bold text-gold-gradient uppercase tracking-wider">
                 {rsvpStatus?.attending === 'yes' ? '✓ Accepts Joyfully' : 'Accepts Joyfully'}
@@ -352,18 +349,16 @@ export default function WeddingCard({
             <button
               type="button"
               onClick={() => handleConfirmAttendance('no')}
-              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${
-                rsvpStatus?.attending === 'no'
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'no'
                   ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
                   : rsvpStatus?.attending === 'yes'
-                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
-                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
-              }`}
+                    ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
+                    : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                }`}
             >
               <X
-                className={`w-7 h-7 morph-spring ${
-                  rsvpStatus?.attending === 'no' ? 'scale-125 text-rose-400' : 'text-gold-300/60'
-                }`}
+                className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'no' ? 'scale-125 text-rose-400' : 'text-gold-300/60'
+                  }`}
               />
               <span className="font-serif text-sm sm:text-base font-bold text-gold-300 uppercase tracking-wider">
                 {rsvpStatus?.attending === 'no' ? '✓ Declines Regretfully' : 'Declines Regretfully'}
@@ -496,7 +491,7 @@ export default function WeddingCard({
                 Save The Date
               </h4>
               <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1">
-                Add Lakshani &amp; Shan&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
+                Add Shan &amp; Lakshani&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
               </p>
             </div>
             <div className="flex items-stretch gap-3 w-full">

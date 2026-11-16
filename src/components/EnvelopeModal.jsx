@@ -48,22 +48,22 @@ export default function EnvelopeModal({ onOpened }) {
     setTimeout(() => {
       setIsOpened(true);
       if (onOpened) onOpened();
-  }, 1600);
-};
+    }, 1600);
+  };
 
-if (isOpened) return null;
+  if (isOpened) return null;
 
-return (
-  <div
-    className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a030a]/95 backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpening ? 'opacity-0 scale-110 pointer-events-none delay-1000' : 'opacity-100 scale-100'
-      }`}
-  >
-    {/* Background radial glow */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.22)_0%,rgba(175,28,64,0.15)_40%,transparent_70%)] pointer-events-none" />
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1a030a]/95 backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpening ? 'opacity-0 scale-110 pointer-events-none delay-1000' : 'opacity-100 scale-100'
+        }`}
+    >
+      {/* Background radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,178,88,0.22)_0%,rgba(175,28,64,0.15)_40%,transparent_70%)] pointer-events-none" />
 
-    {/* Main Envelope Presentation Container */}
-    <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
-      {/* Top Floating Prompt */}
+      {/* Main Envelope Presentation Container */}
+      <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
+        {/* Top Floating Prompt */}
         <div className={`text-center mb-6 transition-all duration-700 ${isOpening ? 'opacity-0 -translate-y-6 scale-90' : 'opacity-100 translate-y-0'}`}>
           <p className="font-serif tracking-[0.3em] text-xs text-gold-300 uppercase mb-2 flex items-center justify-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-gold-400" />
@@ -71,7 +71,7 @@ return (
             <Sparkles className="w-3.5 h-3.5 text-gold-400" />
           </p>
           <h2 className="font-script text-4xl sm:text-5xl md:text-6xl text-gold-foil leading-normal pt-3 pb-1 overflow-visible inline-block">
-            Lakshani &amp; Shan
+            Shan &amp; Lakshani
           </h2>
         </div>
 
@@ -93,18 +93,18 @@ return (
           {/* Morphing Inner Gold Wedding Letter that glides up and expands */}
           <div
             className={`absolute inset-x-5 top-5 h-[90%] rounded-xl bg-gradient-to-b from-[#3a0815] via-[#2a050f] to-[#1a0208] border-2 border-gold-400 shadow-2xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col items-center justify-center text-center p-4 ${isOpening
-                ? '-translate-y-36 scale-110 opacity-100 shadow-[0_25px_60px_rgba(215,178,88,0.5)] z-20'
-                : 'translate-y-2 scale-90 opacity-0 z-0 pointer-events-none'
+              ? '-translate-y-36 scale-110 opacity-100 shadow-[0_25px_60px_rgba(215,178,88,0.5)] z-20'
+              : 'translate-y-2 scale-90 opacity-0 z-0 pointer-events-none'
               }`}
           >
             <div className="w-12 h-12 rounded-full border-2 border-gold-400/60 p-1 mb-2 bg-black/50 shadow-gold-glow flex items-center justify-center">
-              <span className="font-serif text-sm font-black text-gold-gradient">L &amp; S</span>
+              <span className="font-serif text-sm font-black text-gold-gradient">S &amp; L</span>
             </div>
             <span className="font-serif text-[10px] tracking-[0.25em] uppercase text-gold-300 font-bold block">
               Royal Invitation
             </span>
             <h4 className="font-script text-3xl sm:text-4xl text-gold-foil leading-tight mt-1">
-              Lakshani &amp; Shan
+              Shan &amp; Lakshani
             </h4>
             <span className="text-[10px] font-sans font-semibold tracking-[0.2em] text-gold-200 uppercase mt-2 block">
               12 • 12 • 26
@@ -141,8 +141,8 @@ return (
           {/* The Golden Wax Seal Stamp in the Center */}
           <div
             className={`absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpening
-                ? 'scale-150 opacity-0 rotate-45 pointer-events-none'
-                : 'hover:scale-110 active:scale-95'
+              ? 'scale-150 opacity-0 rotate-45 pointer-events-none'
+              : 'hover:scale-110 active:scale-95'
               }`}
           >
             <div className="relative w-20 h-20 md:w-22 md:h-22 rounded-full bg-wax-gold shadow-gold-glow flex items-center justify-center border-4 border-[#82590e] p-1">
@@ -150,9 +150,9 @@ return (
               <div className="w-full h-full rounded-full border-2 border-dashed border-[#593905] flex items-center justify-center flex-col shadow-inner">
                 {/* Monogram Initials */}
                 <span className="font-serif text-sm font-black text-[#3d2400] select-none whitespace-nowrap leading-none inline-flex items-center justify-center">
-                  <span>L</span>
-                  <span className="text-[0.8em] font-bold mx-0.5 self-center leading-none">&amp;</span>
                   <span>S</span>
+                  <span className="text-[0.8em] font-bold mx-0.5 self-center leading-none">&amp;</span>
+                  <span>L</span>
                 </span>
                 <span className="text-[8px] font-sans font-bold tracking-widest text-[#5e3b03] select-none uppercase whitespace-nowrap mt-1">
                   DEC 12
@@ -171,5 +171,5 @@ return (
         </p>
       </div>
     </div>
-    );
+  );
 }

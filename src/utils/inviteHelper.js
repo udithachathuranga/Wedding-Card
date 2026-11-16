@@ -24,10 +24,10 @@ export const COMPANION_OPTIONS = [
 ];
 
 export const WEDDING_DETAILS = {
-  coupleTitle: 'Lakshani & Shan',
+  coupleTitle: 'Shan & Lakshani',
   groom: 'Shantha Ruban',
   bride: 'Lakshani Warnakulasooriya',
-  monogram: 'L & S',
+  monogram: 'S & L',
   groomParents: 'Mr. & Mrs. Idayaraja',
   brideParents: 'Mr. & Mrs. Warnakulasooriya',
   dateFormatted: '12th of December 2026',
@@ -140,7 +140,7 @@ Dear *${guestFormatted}*,
 Together with our families, we cordially invite you to celebrate the holy matrimony and wedding of
 
 💍 *${WEDDING_DETAILS.coupleTitle}* 💍
-_(${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom})_
+_(${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride})_
 
 🗓️ *Save the Date:* ${WEDDING_DETAILS.dateFormatted}
 
@@ -157,7 +157,7 @@ _We can't wait to celebrate this blessed milestone together with you!_ 🕊️�
 export function getGoogleCalendarUrl() {
   const title = encodeURIComponent(`Wedding: ${WEDDING_DETAILS.coupleTitle}`);
   const details = encodeURIComponent(
-    `Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom}).\n` +
+    `Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride}).\n` +
     `• Church Mass: 4:00 PM at ${WEDDING_DETAILS.churchTitle}\n` +
     `• Reception: Following the mass at ${WEDDING_DETAILS.receptionTitle}\n` +
     `• RSVP (Regrets only): ${WEDDING_DETAILS.rsvpPhone}`
@@ -173,12 +173,12 @@ export function getGoogleCalendarUrl() {
 export function downloadIcsFile() {
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Lakshani & Shan Wedding//EN
+PRODID:-//Shan & Lakshani Wedding//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 SUMMARY:Wedding of ${WEDDING_DETAILS.coupleTitle}
-DESCRIPTION:Celebrating the Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.bride} & ${WEDDING_DETAILS.groom}). Church mass at 4.00 pm at St. John's church - Modera, followed by reception at White Tower Hotel - Ja-Ela. RSVP (regrets only): 076 0522561.
+DESCRIPTION:Celebrating the Wedding of ${WEDDING_DETAILS.coupleTitle} (${WEDDING_DETAILS.groom} & ${WEDDING_DETAILS.bride}). Church mass at 4.00 pm at St. John's church - Modera, followed by reception at White Tower Hotel - Ja-Ela. RSVP (regrets only): 076 0522561.
 LOCATION:${WEDDING_DETAILS.churchTitle} / ${WEDDING_DETAILS.receptionTitle}
 DTSTART:20261212T103000Z
 DTEND:20261212T180000Z
@@ -191,7 +191,7 @@ END:VCALENDAR`;
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', 'Lakshani-Shan-Wedding.ics');
+  link.setAttribute('download', 'Shan-Lakshani-Wedding.ics');
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
