@@ -277,14 +277,21 @@ export default function WeddingCard({
         </div>
 
         {/* Hero Photo Showcase */}
-        <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-2xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300">
+        <div className="mt-6 relative rounded-2xl overflow-hidden group max-w-xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300 ">
+          {/* Subtle warm backlight glow behind cutout */}
+          {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(215,178,88,0.22)_0%,rgba(180,30,68,0.18)_45%,transparent_75%)] pointer-events-none" /> */}
+          <div className="absolute pointer-events-none" />
+
           <img
+            // Old image paths:
             // src="/images/wedding_hero.jpg"
-            src="/images/wedding_hero_cropped.jpg"
+            // src="/images/wedding_hero_cropped.jpg"
+            // src="/images/wedding_hero_royal_enhanced.jpg"
+            src="/images/wedding_hero_nobg_enhanced.png"
             alt="Shan and Lakshani wedding celebration"
-            className="w-full h-[420px] sm:h-[520px] md:h-[560px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
+            className="relative z-10 w-full h-[420px] sm:h-[520px] md:h-[560px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
+          <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
             <p className="font-serif italic text-sm sm:text-base text-gold-200 drop-shadow">
               &ldquo;Two lives, two hearts, joined together in friendship, united forever in love.&rdquo;
             </p>
@@ -328,10 +335,10 @@ export default function WeddingCard({
               type="button"
               onClick={() => handleConfirmAttendance('yes')}
               className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'yes'
-                  ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
-                  : rsvpStatus?.attending === 'no'
-                    ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
-                    : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
+                : rsvpStatus?.attending === 'no'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
                 }`}
             >
               <Heart
@@ -351,10 +358,10 @@ export default function WeddingCard({
               type="button"
               onClick={() => handleConfirmAttendance('no')}
               className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'no'
-                  ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
-                  : rsvpStatus?.attending === 'yes'
-                    ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
-                    : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
+                : rsvpStatus?.attending === 'yes'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
                 }`}
             >
               <X
