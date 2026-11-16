@@ -277,262 +277,263 @@ export default function WeddingCard({
         </div>
 
         {/* Hero Photo Showcase */}
-          <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300">
-            <img
-              src="/images/wedding_hero.jpg"
-              alt="Shan and Lakshani wedding celebration"
-              className="w-full h-[420px] sm:h-[520px] md:h-[560px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
-            />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
-                <p className="font-serif italic text-sm sm:text-base text-gold-200 drop-shadow">
-                  &ldquo;Two lives, two hearts, joined together in friendship, united forever in love.&rdquo;
-                </p>
+        <div className="mt-6 relative rounded-2xl overflow-hidden border border-gold-400/40 shadow-luxury group max-w-xl mx-auto morph-reveal delay-150 morph-transition hover:border-gold-300">
+          <img
+            // src="/images/wedding_hero.jpg"
+            src="/images/wedding_hero_cropped.jpg"
+            alt="Shan and Lakshani wedding celebration"
+            className="w-full h-[420px] sm:h-[520px] md:h-[560px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-center p-6 text-center">
+            <p className="font-serif italic text-sm sm:text-base text-gold-200 drop-shadow">
+              &ldquo;Two lives, two hearts, joined together in friendship, united forever in love.&rdquo;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Countdown Timer Section */}
+      <section className="px-4 morph-reveal">
+        <CountdownTimer />
+      </section>
+
+      {/* Guest Attendance & RSVP Section */}
+      <section id="rsvp-section" className="py-8 px-4 max-w-xl mx-auto text-center morph-reveal">
+        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#460c1d]/90 via-[#320715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury backdrop-blur-md overflow-hidden text-center morph-transition">
+          {/* Top golden ribbon accent */}
+          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
+
+          {/* Decorative Corner Stars */}
+          <div className="absolute top-3 left-3 text-gold-400/40 text-xs">✦</div>
+          <div className="absolute top-3 right-3 text-gold-400/40 text-xs">✦</div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 border border-gold-400/30 text-gold-300 text-[10px] sm:text-xs font-serif uppercase tracking-[0.2em] mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+            <span>Attendance Confirmation</span>
+            <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gold-gradient mb-2">
+            Will You Celebrate With Us?
+          </h2>
+
+          <p className="text-xs sm:text-sm text-gold-200/80 font-cormorant text-base max-w-md mx-auto mb-6">
+            Kindly confirm whether you will be able to join us for our holy matrimony and wedding celebration.
+          </p>
+
+          {/* Two Direct Attendance Confirmation Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Button 1: Confirm Attending */}
+            <button
+              type="button"
+              onClick={() => handleConfirmAttendance('yes')}
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'yes'
+                ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
+                : rsvpStatus?.attending === 'no'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                }`}
+            >
+              <Heart
+                className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'yes' ? 'scale-125 fill-gold-400 text-gold-400 animate-pulse' : 'text-gold-400/80'
+                  }`}
+              />
+              <span className="font-serif text-sm sm:text-base font-bold text-gold-gradient uppercase tracking-wider">
+                {rsvpStatus?.attending === 'yes' ? '✓ Accepts Joyfully' : 'Accepts Joyfully'}
+              </span>
+              <span className="text-xs text-gold-200/75 font-sans">
+                {rsvpStatus?.attending === 'yes' ? 'Confirmed: Attending' : 'Yes, I / We will attend'}
+              </span>
+            </button>
+
+            {/* Button 2: Confirm Not Attending */}
+            <button
+              type="button"
+              onClick={() => handleConfirmAttendance('no')}
+              className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'no'
+                ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
+                : rsvpStatus?.attending === 'yes'
+                  ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
+                  : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
+                }`}
+            >
+              <X
+                className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'no' ? 'scale-125 text-rose-400' : 'text-gold-300/60'
+                  }`}
+              />
+              <span className="font-serif text-sm sm:text-base font-bold text-gold-300 uppercase tracking-wider">
+                {rsvpStatus?.attending === 'no' ? '✓ Declines Regretfully' : 'Declines Regretfully'}
+              </span>
+              <span className="text-xs text-gold-300/60 font-sans">
+                {rsvpStatus?.attending === 'no' ? 'Confirmed: Not Attending' : 'Will be there in spirit'}
+              </span>
+            </button>
+          </div>
+
+          {/* Feedback note once clicked */}
+          {rsvpStatus && (
+            <p className="mt-4 text-xs font-serif text-gold-200/90 animate-fade-in-up">
+              {rsvpStatus.attending === 'yes'
+                ? '✨ Thank you! Your attendance has been confirmed.'
+                : '💌 Response recorded: You will be dearly missed in person, but with us in spirit.'}
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* Key Wedding Locations Section (Church Mass & Reception) */}
+      <section className="py-12 px-4 max-w-3xl mx-auto">
+        <div className="text-center mb-8 morph-reveal">
+          <p className="font-serif tracking-[0.25em] text-xs text-gold-300 uppercase mb-2">
+            Order of the Day
+          </p>
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-gold-gradient">
+            Ceremony &amp; Reception Venues
+          </h2>
+          <div className="w-16 h-0.5 bg-gold-400 mx-auto mt-2" />
+        </div>
+
+        {/* Two Venue Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Card 1: Church Mass */}
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-left morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
+                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
+                  Holy Matrimony
+                </span>
+                <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Clock className="w-5 h-5 text-gold-400 shrink-0" />
+                  {WEDDING_DETAILS.churchTime}
+                </span>
               </div>
-            </div>
-          </section>
 
-          {/* Countdown Timer Section */}
-          <section className="px-4 morph-reveal">
-            <CountdownTimer />
-          </section>
-
-          {/* Guest Attendance & RSVP Section */}
-          <section id="rsvp-section" className="py-8 px-4 max-w-xl mx-auto text-center morph-reveal">
-            <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#460c1d]/90 via-[#320715]/85 to-[#24040e]/90 border-2 border-gold-400/50 shadow-luxury backdrop-blur-md overflow-hidden text-center morph-transition">
-              {/* Top golden ribbon accent */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
-
-              {/* Decorative Corner Stars */}
-              <div className="absolute top-3 left-3 text-gold-400/40 text-xs">✦</div>
-              <div className="absolute top-3 right-3 text-gold-400/40 text-xs">✦</div>
-
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 border border-gold-400/30 text-gold-300 text-[10px] sm:text-xs font-serif uppercase tracking-[0.2em] mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-gold-400" />
-                <span>Attendance Confirmation</span>
-                <Sparkles className="w-3.5 h-3.5 text-gold-400" />
-              </div>
-
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gold-gradient mb-2">
-                Will You Celebrate With Us?
-              </h2>
-
-              <p className="text-xs sm:text-sm text-gold-200/80 font-cormorant text-base max-w-md mx-auto mb-6">
-                Kindly confirm whether you will be able to join us for our holy matrimony and wedding celebration.
-              </p>
-
-              {/* Two Direct Attendance Confirmation Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Button 1: Confirm Attending */}
-                <button
-                  type="button"
-                  onClick={() => handleConfirmAttendance('yes')}
-                  className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'yes'
-                    ? 'scale-105 bg-gradient-to-b from-gold-500/35 to-gold-600/25 border-gold-300 text-gold-100 shadow-gold-glow-lg ring-2 ring-gold-400/60 z-10'
-                    : rsvpStatus?.attending === 'no'
-                      ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-gold-200/70'
-                      : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-gold-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
-                    }`}
-                >
-                  <Heart
-                    className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'yes' ? 'scale-125 fill-gold-400 text-gold-400 animate-pulse' : 'text-gold-400/80'
-                      }`}
-                  />
-                  <span className="font-serif text-sm sm:text-base font-bold text-gold-gradient uppercase tracking-wider">
-                    {rsvpStatus?.attending === 'yes' ? '✓ Accepts Joyfully' : 'Accepts Joyfully'}
-                  </span>
-                  <span className="text-xs text-gold-200/75 font-sans">
-                    {rsvpStatus?.attending === 'yes' ? 'Confirmed: Attending' : 'Yes, I / We will attend'}
-                  </span>
-                </button>
-
-                {/* Button 2: Confirm Not Attending */}
-                <button
-                  type="button"
-                  onClick={() => handleConfirmAttendance('no')}
-                  className={`p-6 rounded-2xl border-2 morph-transition cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 ${rsvpStatus?.attending === 'no'
-                    ? 'scale-105 bg-burgundy-950/90 border-rose-400 text-rose-200 shadow-lg ring-2 ring-rose-400/50 z-10'
-                    : rsvpStatus?.attending === 'yes'
-                      ? 'scale-95 opacity-55 hover:opacity-85 bg-black/30 border-gold-400/20 text-ivory-200/70'
-                      : 'scale-100 bg-black/40 hover:bg-black/60 border-gold-400/35 hover:border-gold-300 text-ivory-200 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-gold-glow active:scale-95'
-                    }`}
-                >
-                  <X
-                    className={`w-7 h-7 morph-spring ${rsvpStatus?.attending === 'no' ? 'scale-125 text-rose-400' : 'text-gold-300/60'
-                      }`}
-                  />
-                  <span className="font-serif text-sm sm:text-base font-bold text-gold-300 uppercase tracking-wider">
-                    {rsvpStatus?.attending === 'no' ? '✓ Declines Regretfully' : 'Declines Regretfully'}
-                  </span>
-                  <span className="text-xs text-gold-300/60 font-sans">
-                    {rsvpStatus?.attending === 'no' ? 'Confirmed: Not Attending' : 'Will be there in spirit'}
-                  </span>
-                </button>
-              </div>
-
-              {/* Feedback note once clicked */}
-              {rsvpStatus && (
-                <p className="mt-4 text-xs font-serif text-gold-200/90 animate-fade-in-up">
-                  {rsvpStatus.attending === 'yes'
-                    ? '✨ Thank you! Your attendance has been confirmed.'
-                    : '💌 Response recorded: You will be dearly missed in person, but with us in spirit.'}
-                </p>
-              )}
-            </div>
-          </section>
-
-          {/* Key Wedding Locations Section (Church Mass & Reception) */}
-          <section className="py-12 px-4 max-w-3xl mx-auto">
-            <div className="text-center mb-8 morph-reveal">
-              <p className="font-serif tracking-[0.25em] text-xs text-gold-300 uppercase mb-2">
-                Order of the Day
-              </p>
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-gold-gradient">
-                Ceremony &amp; Reception Venues
-              </h2>
-              <div className="w-16 h-0.5 bg-gold-400 mx-auto mt-2" />
-            </div>
-
-            {/* Two Venue Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Card 1: Church Mass */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-left morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
+                  <Church className="w-5 h-5" />
+                </div>
                 <div>
-                  <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
-                    <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
-                      Holy Matrimony
-                    </span>
-                    <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
-                      <Clock className="w-5 h-5 text-gold-400 shrink-0" />
-                      {WEDDING_DETAILS.churchTime}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
-                      <Church className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
-                        {WEDDING_DETAILS.churchTitle}
-                      </h3>
-                      <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
-                        {/* church mass begins at 4.00 pm at St. John&apos;s church - Modera */}
-                        {WEDDING_DETAILS.churchMassText}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-gold-400/20 mt-4">
-                  <a
-                    href={WEDDING_DETAILS.churchMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
-                  >
-                    <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
-                    <span>Open Church in Google Maps</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-burgundy-950 shrink-0" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Card 2: Reception */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-right delay-150 morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
-                <div>
-                  <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
-                    <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
-                      Wedding Reception
-                    </span>
-                    <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
-                      <Clock className="w-5 h-5 text-gold-400 shrink-0" />
-                      {WEDDING_DETAILS.receptionTime}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
-                      <Sparkles className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
-                        {WEDDING_DETAILS.receptionTitle}
-                      </h3>
-                      <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
-                        {/* The reception begins at 6:30 PM at White Tower Hotel - Ja-Ela */}
-                        {WEDDING_DETAILS.receptionText}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-gold-400/20 mt-4">
-                  <a
-                    href={WEDDING_DETAILS.receptionMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
-                  >
-                    <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
-                    <span>Open Reception in Google Maps</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-burgundy-950 shrink-0" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-
-            {/* Save The Date / Calendar Action Bar */}
-            <div className="max-w-lg mx-auto morph-reveal">
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-[#380816]/90 to-[#22040e]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg morph-transition hover:border-gold-400/60 hover:shadow-gold-glow">
-                <div>
-                  <CalendarPlus className="w-8 h-8 text-gold-400 mx-auto mb-2 animate-pulse" />
-                  <h4 className="font-serif text-base font-bold text-gold-100 uppercase tracking-wider">
-                    Save The Date
-                  </h4>
-                  <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1">
-                    Add Shan &amp; Lakshani&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
+                  <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
+                    {WEDDING_DETAILS.churchTitle}
+                  </h3>
+                  <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
+                    {/* church mass begins at 4.00 pm at St. John&apos;s church - Modera */}
+                    {WEDDING_DETAILS.churchMassText}
                   </p>
                 </div>
-                <div className="flex items-stretch gap-3 w-full">
-                  <a
-                    href={getGoogleCalendarUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
-                  >
-                    <span>Google</span>
-                    <span className="mt-0.5">Calendar</span>
-                  </a>
-                  <button
-                    onClick={downloadIcsFile}
-                    className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
-                  >
-                    <span>Apple / Outlook</span>
-                    <span className="mt-0.5">(.ics)</span>
-                  </button>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-gold-400/20 mt-4">
+              <a
+                href={WEDDING_DETAILS.churchMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
+              >
+                <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
+                <span>Open Church in Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5 text-burgundy-950 shrink-0" />
+              </a>
+            </div>
+          </div>
+
+          {/* Card 2: Reception */}
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#3c0918]/95 via-[#2b0510]/90 to-[#1f030c]/90 border-2 border-gold-400/40 shadow-luxury flex flex-col justify-between text-left group hover:border-gold-400/70 morph-reveal-right delay-150 morph-transition hover:-translate-y-1.5 hover:shadow-gold-glow">
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
+                <span className="px-3 py-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif font-bold text-[10px] uppercase tracking-wider whitespace-nowrap shrink-0">
+                  Wedding Reception
+                </span>
+                <span className="text-md font-serif font-bold text-gold-gradient flex items-center gap-1.5 whitespace-nowrap">
+                  <Clock className="w-5 h-5 text-gold-400 shrink-0" />
+                  {WEDDING_DETAILS.receptionTime}
+                </span>
+              </div>
+
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/40 flex items-center justify-center shrink-0 text-gold-300 group-hover:scale-110 morph-spring">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-xl font-bold text-gold-100 group-hover:text-gold-gradient transition-colors">
+                    {WEDDING_DETAILS.receptionTitle}
+                  </h3>
+                  <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1 italic">
+                    {/* The reception begins at 6:30 PM at White Tower Hotel - Ja-Ela */}
+                    {WEDDING_DETAILS.receptionText}
+                  </p>
                 </div>
               </div>
             </div>
-          </section>
 
-          {/* Royal Footer */}
-          <footer className="mt-12 pt-10 border-t border-gold-400/20 text-center px-4 max-w-xl mx-auto morph-reveal">
-            {/* <span className="font-serif text-3xl font-black text-gold-gradient block mb-2 whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
+            <div className="pt-4 border-t border-gold-400/20 mt-4">
+              <a
+                href={WEDDING_DETAILS.receptionMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 text-burgundy-950 font-serif font-bold text-xs tracking-wider uppercase shadow-gold-glow flex items-center justify-center gap-2 morph-transition hover:scale-[1.02] active:scale-95 text-center"
+              >
+                <MapPin className="w-4 h-4 text-burgundy-950 fill-burgundy-950 shrink-0" />
+                <span>Open Reception in Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5 text-burgundy-950 shrink-0" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Save The Date / Calendar Action Bar */}
+        <div className="max-w-lg mx-auto morph-reveal">
+          <div className="p-6 rounded-2xl bg-gradient-to-b from-[#380816]/90 to-[#22040e]/90 border border-gold-400/30 flex flex-col items-center text-center justify-between gap-4 shadow-lg morph-transition hover:border-gold-400/60 hover:shadow-gold-glow">
+            <div>
+              <CalendarPlus className="w-8 h-8 text-gold-400 mx-auto mb-2 animate-pulse" />
+              <h4 className="font-serif text-base font-bold text-gold-100 uppercase tracking-wider">
+                Save The Date
+              </h4>
+              <p className="text-sm text-gold-200/80 font-cormorant text-base mt-1">
+                Add Shan &amp; Lakshani&apos;s wedding to your personal calendar so you don&apos;t miss the celebration.
+              </p>
+            </div>
+            <div className="flex items-stretch gap-3 w-full">
+              <a
+                href={getGoogleCalendarUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
+              >
+                <span>Google</span>
+                <span className="mt-0.5">Calendar</span>
+              </a>
+              <button
+                onClick={downloadIcsFile}
+                className="flex-1 py-2.5 px-2 rounded-xl bg-gold-500/20 hover:bg-gold-500/30 border border-gold-400/50 text-gold-200 text-xs font-serif uppercase tracking-wider font-bold flex flex-col items-center justify-center leading-tight min-h-[54px] morph-transition hover:scale-105 active:scale-95 hover:border-gold-300 hover:shadow-gold-glow"
+              >
+                <span>Apple / Outlook</span>
+                <span className="mt-0.5">(.ics)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Royal Footer */}
+      <footer className="mt-12 pt-10 border-t border-gold-400/20 text-center px-4 max-w-xl mx-auto morph-reveal">
+        {/* <span className="font-serif text-3xl font-black text-gold-gradient block mb-2 whitespace-nowrap leading-none select-none inline-flex items-center justify-center">
           <span>L</span>
           <span className="text-[0.58em] font-normal mx-2 self-center opacity-95 leading-none">&amp;</span>
           <span>S</span>
         </span> */}
-            <p className="font-script text-3xl sm:text-4xl text-gold-foil leading-normal pt-2 pb-1 overflow-visible inline-block">
-              {WEDDING_DETAILS.coupleTitle}
-            </p>
-            <p className="text-xs text-gold-300/70 mt-2 font-serif tracking-widest uppercase">
-              {WEDDING_DETAILS.dateFormatted} • {WEDDING_DETAILS.churchTitle}
-            </p>
-            <p className="text-sm text-gold-400/50 mt-3 italic font-cormorant">
-              We look forward to celebrating the joy of our holy union with you!
-            </p>
-          </footer>
-        </div>
-        );
+        <p className="font-script text-3xl sm:text-4xl text-gold-foil leading-normal pt-2 pb-1 overflow-visible inline-block">
+          {WEDDING_DETAILS.coupleTitle}
+        </p>
+        <p className="text-xs text-gold-300/70 mt-2 font-serif tracking-widest uppercase">
+          {WEDDING_DETAILS.dateFormatted} • {WEDDING_DETAILS.churchTitle}
+        </p>
+        <p className="text-sm text-gold-400/50 mt-3 italic font-cormorant">
+          We look forward to celebrating the joy of our holy union with you!
+        </p>
+      </footer>
+    </div>
+  );
 }
